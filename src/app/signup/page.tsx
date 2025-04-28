@@ -3,7 +3,8 @@ import { SignUpForm } from '@/components/auth/signup-form';
 import { CirculaLogo } from '@/components/icons/circula-logo'; // Import the logo component
 
 export default function SignUpPage() {
-  const imageUrl = "https://picsum.photos/seed/circulasignup/800/1000"; // Placeholder image
+  // Updated image URL to the user-provided image
+  const imageUrl = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F09228060-b17b-4046-ad74-95a0c940d1d3?alt=media&token=7c478c55-3469-4898-9a33-7316456111a6";
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background p-4 lg:p-8">
@@ -23,7 +24,7 @@ export default function SignUpPage() {
             alt="People watching a sunset"
             layout="fill"
             objectFit="cover"
-            priority
+            priority // Ensure the image loads quickly
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
           <div className="absolute bottom-10 left-10 text-white p-4">
