@@ -4,7 +4,7 @@ import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { AppleIcon, GoogleIcon, XIcon } from '@/components/icons/social-icons'; // Import social icons
+import { SocialIcon } from 'react-social-icons'; // Import SocialIcon
 
 import { Button } from "@/components/ui/button";
 import {
@@ -126,16 +126,16 @@ export function SignUpForm() {
 
         {/* Social Sign Up Buttons */}
         <div className="space-y-3">
-             <Button variant="outline" className="w-full h-11" onClick={() => handleSocialSignUp('Apple')}>
-                <AppleIcon className="mr-2 h-5 w-5" />
+             <Button variant="outline" className="w-full h-11 flex items-center justify-center gap-2" onClick={() => handleSocialSignUp('Apple')}>
+                <SocialIcon network="apple" style={{ height: 20, width: 20 }} bgColor="currentColor" fgColor="transparent" className="text-foreground" />
                 Sign up with Apple
             </Button>
-             <Button variant="outline" className="w-full h-11" onClick={() => handleSocialSignUp('Google')}>
-                <GoogleIcon className="mr-2 h-5 w-5" />
+             <Button variant="outline" className="w-full h-11 flex items-center justify-center gap-2" onClick={() => handleSocialSignUp('Google')}>
+                <SocialIcon network="google" style={{ height: 20, width: 20 }} />
                 Sign up with Google
             </Button>
-            <Button variant="outline" className="w-full h-11" onClick={() => handleSocialSignUp('X')}>
-                <XIcon className="mr-2 h-5 w-5 fill-current" />
+            <Button variant="outline" className="w-full h-11 flex items-center justify-center gap-2" onClick={() => handleSocialSignUp('X')}>
+                <SocialIcon network="x" style={{ height: 20, width: 20 }} bgColor="currentColor" fgColor="transparent" className="text-foreground" />
                 Sign up with X
             </Button>
         </div>
