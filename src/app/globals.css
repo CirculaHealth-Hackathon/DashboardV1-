@@ -14,7 +14,7 @@ body {
     --card-foreground: 210 10% 23%; /* Dark grey for text on card */
     --popover: 0 0% 100%;
     --popover-foreground: 210 10% 23%;
-    --primary: 217 91% 60%; /* Blue */
+    --primary: 217 91% 60%; /* Blue - Updated */
     --primary-foreground: 0 0% 98%; /* White text on primary */
     --secondary: 190 53% 80%; /* Light teal #B0E0E6 */
     --secondary-foreground: 180 100% 15%; /* Darker teal text on secondary */
@@ -26,7 +26,7 @@ body {
     --destructive-foreground: 0 0% 98%;
     --border: 210 17% 88%; /* Border color based on background */
     --input: 210 17% 88%; /* Input border color */
-    --ring: 217 91% 60%; /* Blue for focus rings */
+    --ring: 217 91% 60%; /* Blue for focus rings - Updated */
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -50,7 +50,7 @@ body {
     --card-foreground: 0 0% 95%; /* Lighter text on card */
     --popover: 210 10% 20%;
     --popover-foreground: 0 0% 95%;
-    --primary: 217 91% 70%; /* Slightly lighter Blue for dark mode */
+    --primary: 217 91% 70%; /* Slightly lighter Blue for dark mode - Updated */
     --primary-foreground: 0 0% 9%; /* Darker text on lighter blue */
     --secondary: 190 53% 30%; /* Darker Light teal */
     --secondary-foreground: 0 0% 95%;
@@ -62,7 +62,7 @@ body {
     --destructive-foreground: 0 0% 98%;
     --border: 210 10% 30%; /* Darker border */
     --input: 210 10% 30%; /* Darker input border */
-    --ring: 217 91% 70%; /* Lighter Blue ring for dark mode */
+    --ring: 217 91% 70%; /* Lighter Blue ring for dark mode - Updated */
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
