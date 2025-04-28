@@ -1,33 +1,36 @@
 import Image from 'next/image';
 import { SignUpForm } from '@/components/auth/signup-form';
-import { Card } from '@/components/ui/card'; // Import Card for consistent styling
+import { CirculaLogo } from '@/components/icons/circula-logo'; // Import the logo component
 
 export default function SignUpPage() {
-  // Use a placeholder image as direct image upload isn't possible here.
-  // Replace src with the actual image path if hosted locally or a different URL.
-  const imageUrl = "https://picsum.photos/seed/formifysignup/800/1000"; // Placeholder landscape image resembling the sunset scene
+  const imageUrl = "https://picsum.photos/seed/circulasignup/800/1000"; // Placeholder image
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background p-4 lg:p-0">
-      <div className="flex w-full max-w-4xl overflow-hidden rounded-lg shadow-lg">
+    <main className="flex min-h-screen items-center justify-center bg-background p-4 lg:p-8">
+      <div className="flex w-full max-w-5xl overflow-hidden rounded-lg shadow-lg bg-card">
         {/* Form Section */}
-        <div className="w-full lg:w-1/2 p-8 flex items-center justify-center bg-card">
-           {/* Wrap form in Card for consistent styling and background */}
-           <SignUpForm />
+        <div className="w-full lg:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+          <div className="mb-8">
+            <CirculaLogo className="h-8 w-auto text-primary" />
+          </div>
+          <SignUpForm />
         </div>
 
-        {/* Image Section - Hidden on small screens, shown on large screens */}
+        {/* Image Section */}
         <div className="hidden lg:block lg:w-1/2 relative">
           <Image
             src={imageUrl}
-            alt="Sign up illustration"
+            alt="People watching a sunset"
             layout="fill"
-            objectFit="cover" // Ensures the image covers the div
-            priority // Prioritize loading this image
+            objectFit="cover"
+            priority
           />
-           {/* Optional overlay for better text visibility if needed
-           <div className="absolute inset-0 bg-black opacity-20"></div>
-           */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+          <div className="absolute bottom-10 left-10 text-white p-4">
+            <h2 className="text-3xl font-semibold leading-tight">
+              Circulating blood to <span className="text-primary">those</span> who <span className="text-primary">need it the most</span>
+            </h2>
+          </div>
         </div>
       </div>
     </main>

@@ -1,21 +1,13 @@
 import type {Metadata} from 'next';
-import {Geist, Geist_Mono} from 'next/font/google';
+import { Inter } from 'next/font/google'; // Use Inter font
 import './globals.css';
-import { Toaster } from "@/components/ui/toaster" // Import Toaster
+import { Toaster } from "@/components/ui/toaster"; // Import Toaster
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+const inter = Inter({ subsets: ['latin'] }); // Initialize Inter font
 
 export const metadata: Metadata = {
-  title: 'Formify', // Update title
-  description: 'A simple form application built with Next.js', // Update description
+  title: 'Circula', // Update title
+  description: 'Circulating blood to those who need it the most.', // Update description
 };
 
 export default function RootLayout({
@@ -25,7 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background`}>
+      {/* Apply Inter font to the body */}
+      <body className={`${inter.className} antialiased bg-background`}>
         {children}
         <Toaster /> {/* Add Toaster here */}
       </body>
