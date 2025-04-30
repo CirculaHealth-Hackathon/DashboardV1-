@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -70,9 +69,9 @@ export default function LoginPage() {
           </div>
           <div className="absolute bottom-10 left-10 text-white p-4" style={{ zIndex: 2 }}>
             <h2 className="text-3xl font-semibold leading-tight">
-              Welcome back to Circula
+              Circulating blood to <span className="text-primary">those</span> who{" "}
+              <span className="text-primary">need it the most</span>
             </h2>
-            <p className="mt-2 text-lg text-muted-foreground">Log in to continue your journey.</p>
           </div>
         </div>
       </div>
