@@ -1,10 +1,12 @@
+
 "use client";
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { SocialIcon } from 'react-social-icons'; // Import SocialIcon
+import { SocialIcon } from 'react-social-icons';
+import { useRouter } from 'next/navigation'; // Import useRouter
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,6 +32,7 @@ type SignUpFormValues = z.infer<typeof formSchema>;
 
 export function SignUpForm() {
   const { toast } = useToast();
+  const router = useRouter(); // Initialize router
 
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(formSchema),
@@ -72,7 +75,6 @@ export function SignUpForm() {
 
   return (
     <div className="w-full max-w-md">
-        {/* Removed CardHeader, Title/Description moved to page */}
          <h1 className="text-2xl font-bold mb-2">Create your account</h1>
          <p className="text-muted-foreground mb-6">
             To help ensure a steady flow of life-saving blood for those who need it the most
@@ -99,7 +101,6 @@ export function SignUpForm() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                      {/* Removed password toggle */}
                       <Input
                           type="password"
                           placeholder="••••••••"
@@ -110,9 +111,17 @@ export function SignUpForm() {
                 </FormItem>
               )}
             />
-            {/* Button updated */}
             <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-11 mt-6">
               Create my account
+            </Button>
+            {/* Add Log In Button */}
+            <Button
+              variant="outline"
+              type="button" // Ensure it doesn't submit the form
+              className="w-full h-11 mt-2"
+              onClick={() => router.push('/login')} // Navigate to /login on click
+            >
+              Log in to my account
             </Button>
           </form>
         </Form>
@@ -124,12 +133,8 @@ export function SignUpForm() {
             <Separator className="flex-1" />
         </div>
 
-        {/* Social Sign Up Buttons */}
+        {/* Social Sign Up Buttons - Removed Apple */}
         <div className="space-y-3">
-             <Button variant="outline" className="w-full h-11 flex items-center justify-center gap-2" onClick={() => handleSocialSignUp('Apple')}>
-                <SocialIcon network="apple" style={{ height: 20, width: 20 }} bgColor="currentColor" fgColor="transparent" className="text-foreground" />
-                Sign up with Apple
-            </Button>
              <Button variant="outline" className="w-full h-11 flex items-center justify-center gap-2" onClick={() => handleSocialSignUp('Google')}>
                 <SocialIcon network="google" style={{ height: 20, width: 20 }} />
                 Sign up with Google
