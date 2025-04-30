@@ -1,10 +1,29 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import { SignUpForm } from "@/components/auth/signup-form";
 import { CirculaLogo } from "@/components/icons/circula-logo";
-import React from "react";
 
 export default function SignUpPage() {
+  const [bloodCells, setBloodCells] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Generate blood cell data client-side
+    const generateBloodCells = () => {
+      const newCells = Array.from({ length: 20 }, (_, i) => ({
+        key: i,
+        top: `${Math.random() * 100}%`,
+        left: `${Math.random() * 100}%`,
+        animationDelay: `${Math.random() * 5}s`,
+        animationDuration: `${Math.random() * 5 + 5}s`,
+        opacity: Math.random() * 0.6 + 0.4,
+      }));
+      setBloodCells(newCells);
+    };
+
+    generateBloodCells();
+  }, []);
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-background p-4 lg:p-8">
       <div className="flex w-full max-w-5xl overflow-hidden rounded-lg shadow-lg bg-card">
@@ -26,16 +45,16 @@ export default function SignUpPage() {
             className="blood-cell-container absolute inset-0"
             style={{ zIndex: 0 }}
           >
-            {Array.from({ length: 20 }, (_, i) => (
+            {bloodCells.map((cell) => (
               <div
-                key={i}
+                key={cell.key}
                 className="blood-cell"
                 style={{
-                  top: `${Math.random() * 100}%`,
-                  left: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 5}s`,
-                  animationDuration: `${Math.random() * 5 + 5}s`,
-                  opacity: Math.random() * 0.6 + 0.4,
+                  top: cell.top,
+                  left: cell.left,
+                  animationDelay: cell.animationDelay,
+                  animationDuration: cell.animationDuration,
+                  opacity: cell.opacity,
                 }}
               />
             ))}
