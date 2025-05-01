@@ -1,4 +1,3 @@
-
 "use client";
 
 import { CirculaLogo } from "@/components/icons/circula-logo";
@@ -23,6 +22,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Search } from "lucide-react"; // Import Search icon
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
 
 const dummyBloodData = [
   {
@@ -33,6 +43,9 @@ const dummyBloodData = [
     bloodCode: "XXX0121",
     distance: "6 km",
     dateUploaded: "Jan 10, 2025 10:10 WIB",
+    whatsapp: "+62812-3456-7890",
+    phone: "+62274-987654",
+    email: "info@rshermina.co.id",
   },
   {
     bloodType: "A-",
@@ -42,6 +55,9 @@ const dummyBloodData = [
     bloodCode: "XXX0122",
     distance: "10 km",
     dateUploaded: "Jan 10, 2025 09:45 WIB",
+    whatsapp: "+62812-3456-7891",
+    phone: "+62274-987655",
+    email: "info@pmi.or.id",
   },
   {
     bloodType: "B+",
@@ -51,6 +67,9 @@ const dummyBloodData = [
     bloodCode: "XXX0123",
     distance: "25 km",
     dateUploaded: "Jan 09, 2025 15:30 WIB",
+    whatsapp: "+62812-3456-7892",
+    phone: "+62274-987656",
+    email: "info@pmi.or.id",
   },
   {
     bloodType: "O+",
@@ -60,6 +79,9 @@ const dummyBloodData = [
     bloodCode: "XXX0124",
     distance: "25 km",
     dateUploaded: "Jan 09, 2025 11:00 WIB",
+    whatsapp: "+62812-3456-7893",
+    phone: "+62274-987657",
+    email: "info@sardjito.co.id",
   },
   {
     bloodType: "O-",
@@ -69,6 +91,9 @@ const dummyBloodData = [
     bloodCode: "XXX0125",
     distance: "32 km",
     dateUploaded: "Jan 08, 2025 16:20 WIB",
+    whatsapp: "+62812-3456-7894",
+    phone: "+62274-987658",
+    email: "info@rshermina.co.id",
   },
    {
     bloodType: "AB+",
@@ -78,6 +103,9 @@ const dummyBloodData = [
     bloodCode: "XXX0126",
     distance: "15 km",
     dateUploaded: "Jan 10, 2025 11:15 WIB",
+    whatsapp: "+62812-3456-7895",
+    phone: "+62274-987659",
+    email: "info@rspondokindah.co.id",
   },
   {
     bloodType: "B-",
@@ -87,6 +115,9 @@ const dummyBloodData = [
     bloodCode: "XXX0127",
     distance: "28 km",
     dateUploaded: "Jan 09, 2025 10:05 WIB",
+     whatsapp: "+62812-3456-7896",
+    phone: "+62274-987660",
+    email: "info@rsborromeus.co.id",
   },
 ];
 
@@ -96,6 +127,9 @@ export default function BloodSupplyPage() {
   const [userName, setUserName] = useState<string>("Unknown");
   const [userInitial, setUserInitial] = useState<string>("?");
   const [isMounted, setIsMounted] = useState(false); // State to track mount status
+  const [selectedBloodData, setSelectedBloodData] = useState(null);
+  const [open, setOpen] = useState(false);
+
 
   useEffect(() => {
     setIsMounted(true); // Component has mounted
@@ -139,6 +173,11 @@ export default function BloodSupplyPage() {
   if (!isMounted) {
     return null; // Or replace with a loading spinner/skeleton
   }
+
+  const handleDetailsClick = (data) => {
+    setSelectedBloodData(data);
+    setOpen(true);
+  };
 
 
   return (
@@ -229,6 +268,7 @@ export default function BloodSupplyPage() {
                   <TableHead className="font-semibold text-right">
                     Date Uploaded
                   </TableHead>
+                   <TableHead className="font-semibold"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -245,11 +285,16 @@ export default function BloodSupplyPage() {
                     <TableCell className="text-right text-muted-foreground text-sm">
                       {data.dateUploaded}
                     </TableCell>
+                     <TableCell className="text-right">
+                      <Button variant="outline" size="sm" onClick={() => handleDetailsClick(data)}>
+                        Details
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
                  {filteredBloodData.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                    <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
                       No blood supply data found matching your search.
                     </TableCell>
                   </TableRow>
@@ -264,8 +309,50 @@ export default function BloodSupplyPage() {
       <footer className="container mx-auto px-4 py-6 mt-12 border-t text-center text-muted-foreground text-sm">
         © {new Date().getFullYear()} Circula. All rights reserved.
       </footer>
+
+       <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Blood Supply Details</DialogTitle>
+            <DialogDescription>
+              {selectedBloodData ? (
+                <>
+                  <div className="grid gap-4">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold">Blood Type:</span>
+                      <span>{selectedBloodData.bloodType}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold">Amount:</span>
+                      <span>{selectedBloodData.amount}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold">Hospital/Organization:</span>
+                      <span>{selectedBloodData.hospital}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold">Location:</span>
+                      <span>{selectedBloodData.location}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold">Distance:</span>
+                      <span>{selectedBloodData.distance}</span>
+                    </div>
+                  </div>
+                  <DialogFooter className="mt-4">
+                    <Button variant="outline" onClick={() => setOpen(false)}>
+                      Contact Hospital
+                    </Button>
+                    <Button>Request Blood Through Circula</Button>
+                  </DialogFooter>
+                </>
+              ) : (
+                <p>No data selected.</p>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
-
-    
