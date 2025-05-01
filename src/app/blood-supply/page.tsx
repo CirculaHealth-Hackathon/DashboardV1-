@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
@@ -90,6 +90,19 @@ const dummyBloodData = [
 export default function BloodSupplyPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter(); // Initialize router
+  const [userEmail, setUserEmail] = useState<string>("Unknown User");
+  const [userName, setUserName] = useState<string>("Unknown");
+
+  useEffect(() => {
+    // Access localStorage only on the client-side
+    const userData = localStorage.getItem("circulaUserData");
+    if (userData) {
+      const parsedUserData = JSON.parse(userData);
+      setUserEmail(parsedUserData.email || "Unknown User");
+      setUserName(parsedUserData.email.split('@')[0] || "Unknown");
+    }
+  }, []);
+
 
   const filteredBloodData = dummyBloodData.filter((data) => {
     const searchStr = `${data.bloodType} ${data.location}`.toLowerCase();
@@ -105,9 +118,6 @@ export default function BloodSupplyPage() {
     router.push('/login');
   };
 
-  const userData = localStorage.getItem("circulaUserData");
-  const userEmail = userData ? JSON.parse(userData).email : "Unknown User";
-  const userName = userEmail.split('@')[0];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
