@@ -20,9 +20,10 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { ArrowLeft } from "lucide-react"; // Import ArrowLeft icon
+import { ArrowLeft, X } from "lucide-react"; // Import ArrowLeft icon
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Import Card components
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 
 
 // Dummy data for blood supply details
@@ -137,6 +138,7 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
   const [userName, setUserName] = useState<string>("Unknown");
   const [userInitial, setUserInitial] = useState<string>("?");
   const [isMounted, setIsMounted] = useState(false);
+  const [open, setOpen] = React.useState(false);
 
 
   useEffect(() => {
@@ -274,7 +276,42 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
                 </section>
 
                 <section className="mt-8 flex justify-start gap-4">
-                    <Button variant="outline">Contact Hospital</Button>
+                   <Dialog>
+                        <DialogTrigger asChild>
+                            <Button variant="outline">Contact Hospital</Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                                <DialogTitle>Contact Hospital</DialogTitle>
+                                <DialogDescription>
+                                    Here are the contact details for {bloodData.hospital}.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <label htmlFor="whatsapp" className="text-right">
+                                        WhatsApp
+                                    </label>
+                                    <Input type="text" id="whatsapp" value={bloodData.whatsapp} className="col-span-3" readOnly />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <label htmlFor="phone" className="text-right">
+                                        Phone
+                                    </label>
+                                    <Input type="text" id="phone" value={bloodData.phone} className="col-span-3" readOnly />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <label htmlFor="email" className="text-right">
+                                        Email
+                                    </label>
+                                    <Input type="email" id="email" value={bloodData.email} className="col-span-3" readOnly />
+                                </div>
+                            </div>
+                            <DialogClose asChild>
+                                <Button type="button" variant="secondary">Close</Button>
+                            </DialogClose>
+                        </DialogContent>
+                    </Dialog>
                     <Button>Request Blood Through Circula</Button>
                 </section>
             </CardContent>
