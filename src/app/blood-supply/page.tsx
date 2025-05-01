@@ -12,6 +12,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const dummyBloodData = [
   {
@@ -81,6 +89,7 @@ const dummyBloodData = [
 
 export default function BloodSupplyPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter(); // Initialize router
 
   const filteredBloodData = dummyBloodData.filter((data) => {
     const searchStr = `${data.bloodType} ${data.location}`.toLowerCase();
@@ -91,12 +100,34 @@ export default function BloodSupplyPage() {
     setSearchQuery(event.target.value);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("circulaUserData");
+    router.push('/login');
+  };
+
+  const userData = localStorage.getItem("circulaUserData");
+  const userEmail = userData ? JSON.parse(userData).email : "Unknown User";
+  const userName = userEmail.split('@')[0];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
       <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
         <CirculaLogo className="h-8 w-auto text-primary" />
-        <Button variant="outline">Go to My Database</Button>
+         <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <Avatar className="mr-2">
+                    <AvatarImage src="https://picsum.photos/50/50" alt={userName} />
+                    <AvatarFallback>{userName.substring(0, 2).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                  {userName}
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
       </header>
 
       {/* Main Content */}
