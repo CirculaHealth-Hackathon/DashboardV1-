@@ -1,14 +1,26 @@
-import { redirect } from 'next/navigation';
 
-export default function Home() {
-  // Redirect to the signup page immediately
-  redirect('/signup');
+"use client";
 
-  // This part will technically not be reached, but kept for potential future use
-  // return (
-  //   <main className="flex min-h-screen flex-col items-center justify-center p-24">
-  //     <h1 className="text-4xl font-bold mb-8">Welcome to Circula</h1>
-  //     <p className="text-lg mb-8">Redirecting to sign up...</p>
-  //   </main>
-  // );
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { CirculaLogo } from '@/components/icons/circula-logo';
+
+export default function SplashScreen() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Redirect to the signup page after 2 seconds
+    const timer = setTimeout(() => {
+      router.push('/signup');
+    }, 2000); // 2000 milliseconds = 2 seconds
+
+    // Cleanup the timer if the component unmounts
+    return () => clearTimeout(timer);
+  }, [router]);
+
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background">
+      <CirculaLogo className="h-12 w-auto text-primary animate-pulse" /> {/* Increased size and added pulse animation */}
+    </main>
+  );
 }
