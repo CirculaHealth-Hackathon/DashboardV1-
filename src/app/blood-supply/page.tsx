@@ -145,9 +145,9 @@ export default function BloodSupplyPage() {
         <CirculaLogo className="h-8 w-auto text-primary" />
         <div className="flex items-center gap-4"> {/* Changed gap */}
             {/* Moved Buttons to the right */}
-            <Button variant="ghost">Database</Button>
-            <Button variant="ghost">My Orders</Button>
-            <Button variant="ghost">Input Data</Button>
+            <Button variant="ghost" className="border">Database</Button>
+            <Button variant="ghost" className="border">My Orders</Button>
+            <Button variant="ghost" className="border">Input Data</Button>
 
             {/* Profile Dropdown */}
             <DropdownMenu>
@@ -264,5 +264,4 @@ export default function BloodSupplyPage() {
     </div>
   );
 }
-
 
