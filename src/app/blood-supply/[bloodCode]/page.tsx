@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -24,6 +25,7 @@ import { ArrowLeft, X } from "lucide-react"; // Import ArrowLeft icon
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Import Card components
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import * as React from "react";
 
 
 // Dummy data for blood supply details
@@ -132,7 +134,8 @@ interface Props {
 }
 
 export default function BloodSupplyDetailsPage({ params }: Props) {
-  const { bloodCode } = params;
+  const { bloodCode: bloodCodeParam } = params;
+  const bloodCode = React.useMemo(() => bloodCodeParam, [bloodCodeParam]);
   const [bloodData, setBloodData] = useState<BloodData | undefined>(undefined);
   const router = useRouter();
   const [userName, setUserName] = useState<string>("Unknown");
@@ -325,3 +328,4 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
     </div>
   );
 }
+
