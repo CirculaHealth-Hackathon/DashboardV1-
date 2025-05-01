@@ -1,4 +1,3 @@
-
 "use client";
 
 import * as React from "react";
@@ -52,7 +51,9 @@ export function LoginForm() {
       const storedData = localStorage.getItem("circulaUserData");
       if (storedData) {
         const userData = JSON.parse(storedData);
-        if (userData.email === data.email && userData.password === data.password) {
+        // Convert both stored and input email/password to lowercase for comparison
+        if (userData.email.toLowerCase() === data.email.toLowerCase() &&
+            userData.password.toLowerCase() === data.password.toLowerCase()) {
             toast({
                 title: "Login Successful",
                 description: "Welcome back!",
