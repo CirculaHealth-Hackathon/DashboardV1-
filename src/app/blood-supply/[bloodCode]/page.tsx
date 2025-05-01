@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ArrowLeft } from "lucide-react"; // Import ArrowLeft icon
 import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Import Card components
+
 
 // Dummy data for blood supply details
 const dummyBloodData = [
@@ -234,46 +236,49 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        <section className="mb-8">
-          <Link href="/blood-supply" className="inline-flex items-center mb-4">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Blood Supply Data
-          </Link>
+      <main className="container mx-auto px-4 py-12 flex flex-col items-center">
+      <h1 className="text-3xl font-bold mb-8 text-center flex items-center">
+            <Button variant="ghost" onClick={() => router.push('/blood-supply')} className="mr-2">
+                <ArrowLeft />
+            </Button>
+            Blood Supply Details
+        </h1>
 
-          <h1 className="text-4xl font-bold mb-4">Blood Supply Details</h1>
-          <p className="text-muted-foreground">
-            Details for blood code: {bloodCode}
-          </p>
-        </section>
+      <Card className="w-full max-w-lg shadow-md">
+            <CardContent className="p-6">
+                <section className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <span className="font-semibold">Blood Type:</span>
+                        <span>{bloodData.bloodType}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <span className="font-semibold">Amount:</span>
+                        <span>{bloodData.amount}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <span className="font-semibold">Hospital/Organization:</span>
+                        <span>{bloodData.hospital}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <span className="font-semibold">Location:</span>
+                        <span>{bloodData.location}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <span className="font-semibold">Distance:</span>
+                        <span>{bloodData.distance}</span>
+                    </div>
+                     <div className="flex items-center justify-between">
+                        <span className="font-semibold">Date Uploaded:</span>
+                        <span>{bloodData.dateUploaded}</span>
+                    </div>
+                </section>
 
-        <section className="grid gap-4">
-          <div className="flex items-center justify-between">
-            <span className="font-semibold">Blood Type:</span>
-            <span>{bloodData.bloodType}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="font-semibold">Amount:</span>
-            <span>{bloodData.amount}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="font-semibold">Hospital/Organization:</span>
-            <span>{bloodData.hospital}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="font-semibold">Location:</span>
-            <span>{bloodData.location}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="font-semibold">Distance:</span>
-            <span>{bloodData.distance}</span>
-          </div>
-        </section>
-
-        <section className="mt-8 flex justify-start gap-4">
-          <Button variant="outline">Contact Hospital</Button>
-          <Button>Request Blood Through Circula</Button>
-        </section>
+                <section className="mt-8 flex justify-start gap-4">
+                    <Button variant="outline">Contact Hospital</Button>
+                    <Button>Request Blood Through Circula</Button>
+                </section>
+            </CardContent>
+        </Card>
       </main>
 
       {/* Footer Placeholder */}
