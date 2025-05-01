@@ -81,7 +81,7 @@ export default function BloodSupplyPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
         <CirculaLogo className="h-8 w-auto text-primary" />
         <Button variant="outline">Go to My Database</Button>
       </header>
@@ -115,7 +115,7 @@ export default function BloodSupplyPage() {
             organizations
           </p>
 
-          <div className="rounded-lg border overflow-hidden">
+          <div className="rounded-lg border overflow-hidden shadow-sm">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50 hover:bg-muted/50">
@@ -134,16 +134,16 @@ export default function BloodSupplyPage() {
               </TableHeader>
               <TableBody>
                 {dummyBloodData.map((data, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="font-medium">
+                  <TableRow key={index} className="hover:bg-muted/40">
+                    <TableCell className="font-medium text-primary">
                       {data.bloodType}
                     </TableCell>
                     <TableCell>{data.amount}</TableCell>
                     <TableCell>{data.hospital}</TableCell>
                     <TableCell>{data.location}</TableCell>
-                    <TableCell>{data.bloodCode}</TableCell>
+                    <TableCell className="text-muted-foreground">{data.bloodCode}</TableCell>
                     <TableCell>{data.distance}</TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-right text-muted-foreground text-sm">
                       {data.dateUploaded}
                     </TableCell>
                   </TableRow>
@@ -153,6 +153,11 @@ export default function BloodSupplyPage() {
           </div>
         </section>
       </main>
+
+      {/* Footer Placeholder */}
+      <footer className="container mx-auto px-4 py-6 mt-12 border-t text-center text-muted-foreground text-sm">
+        © {new Date().getFullYear()} Circula. All rights reserved.
+      </footer>
     </div>
   );
 }
