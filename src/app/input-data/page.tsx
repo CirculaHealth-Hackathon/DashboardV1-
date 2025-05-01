@@ -1,4 +1,3 @@
-
 "use client";
 
 import * as React from "react";
@@ -38,6 +37,7 @@ import { useToast } from "@/hooks/use-toast";
 import { CirculaLogo } from "@/components/icons/circula-logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ArrowLeft } from "lucide-react";
 
 
 // Validation Schema
@@ -112,6 +112,7 @@ export default function InputDataPage() {
      <div className="min-h-screen bg-background text-foreground">
         {/* Header - Copied from blood-supply page for consistency */}
         <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
+            <Button variant="ghost" onClick={() => router.push('/blood-supply')}><ArrowLeft /></Button>
             <CirculaLogo className="h-8 w-auto text-primary cursor-pointer" onClick={() => router.push('/blood-supply')} />
             <div className="flex items-center gap-4">
                 <Button variant="ghost" className="border" onClick={() => router.push('/blood-supply')}>Database</Button>
