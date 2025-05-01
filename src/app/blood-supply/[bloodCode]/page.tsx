@@ -141,7 +141,6 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
   const [userName, setUserName] = useState<string>("Unknown");
   const [userInitial, setUserInitial] = useState<string>("?");
   const [isMounted, setIsMounted] = useState(false);
-  const [open, setOpen] = React.useState(false);
 
 
   useEffect(() => {
@@ -174,7 +173,7 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
     return (
       <div className="min-h-screen bg-background text-foreground">
         <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
-          <CirculaLogo className="h-8 w-auto text-primary" />
+          <CirculaLogo className="h-8 w-auto text-primary cursor-pointer" onClick={() => router.push('/blood-supply')} />
           {/* Profile Dropdown */}
           <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -212,7 +211,7 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
       <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
-        <CirculaLogo className="h-8 w-auto text-primary" />
+        <CirculaLogo className="h-8 w-auto text-primary cursor-pointer" onClick={() => router.push('/blood-supply')}/>
           {/* Profile Dropdown */}
           <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -315,7 +314,10 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
                             </DialogClose>
                         </DialogContent>
                     </Dialog>
-                    <Button>Request Blood Through Circula</Button>
+                    {/* Link to the confirmation page */}
+                    <Link href={`/blood-request-confirmation/${bloodData.bloodCode}`} passHref>
+                         <Button>Request Blood Through Circula</Button>
+                    </Link>
                 </section>
             </CardContent>
         </Card>
@@ -328,4 +330,3 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
     </div>
   );
 }
-
