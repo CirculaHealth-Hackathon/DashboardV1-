@@ -252,7 +252,7 @@ export default function BloodSupplyPage() {
                   <TableHead className="font-semibold text-right">
                     Date Uploaded
                   </TableHead>
-                   <TableHead className="font-semibold"></TableHead>
+                   <TableHead className="font-semibold"></TableHead> {/* Header for Details button */}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -270,6 +270,7 @@ export default function BloodSupplyPage() {
                       {data.dateUploaded}
                     </TableCell>
                      <TableCell className="text-right">
+                      {/* Use Link component for navigation */}
                       <Link href={`/blood-supply/${data.bloodCode}`} passHref>
                         <Button variant="outline" size="sm">
                           Details
