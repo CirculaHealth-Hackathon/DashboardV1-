@@ -22,17 +22,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Search } from "lucide-react"; // Import Search icon
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 const dummyBloodData = [
   {
@@ -127,8 +118,6 @@ export default function BloodSupplyPage() {
   const [userName, setUserName] = useState<string>("Unknown");
   const [userInitial, setUserInitial] = useState<string>("?");
   const [isMounted, setIsMounted] = useState(false); // State to track mount status
-  const [selectedBloodData, setSelectedBloodData] = useState(null);
-  const [open, setOpen] = useState(false);
 
 
   useEffect(() => {
@@ -173,11 +162,6 @@ export default function BloodSupplyPage() {
   if (!isMounted) {
     return null; // Or replace with a loading spinner/skeleton
   }
-
-  const handleDetailsClick = (data) => {
-    setSelectedBloodData(data);
-    setOpen(true);
-  };
 
 
   return (
@@ -286,9 +270,11 @@ export default function BloodSupplyPage() {
                       {data.dateUploaded}
                     </TableCell>
                      <TableCell className="text-right">
-                      <Button variant="outline" size="sm" onClick={() => handleDetailsClick(data)}>
-                        Details
-                      </Button>
+                      <Link href={`/blood-supply/${data.bloodCode}`} passHref>
+                        <Button variant="outline" size="sm">
+                          Details
+                        </Button>
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -309,50 +295,6 @@ export default function BloodSupplyPage() {
       <footer className="container mx-auto px-4 py-6 mt-12 border-t text-center text-muted-foreground text-sm">
         © {new Date().getFullYear()} Circula. All rights reserved.
       </footer>
-
-       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Blood Supply Details</DialogTitle>
-            <DialogDescription>
-              {selectedBloodData ? (
-                <>
-                  <div className="grid gap-4">
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold">Blood Type:</span>
-                      <span>{selectedBloodData.bloodType}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold">Amount:</span>
-                      <span>{selectedBloodData.amount}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold">Hospital/Organization:</span>
-                      <span>{selectedBloodData.hospital}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold">Location:</span>
-                      <span>{selectedBloodData.location}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold">Distance:</span>
-                      <span>{selectedBloodData.distance}</span>
-                    </div>
-                  </div>
-                  <DialogFooter className="mt-4">
-                    <Button variant="outline" onClick={() => setOpen(false)}>
-                      Contact Hospital
-                    </Button>
-                    <Button>Request Blood Through Circula</Button>
-                  </DialogFooter>
-                </>
-              ) : (
-                <p>No data selected.</p>
-              )}
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
