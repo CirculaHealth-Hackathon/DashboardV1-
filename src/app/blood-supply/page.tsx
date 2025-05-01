@@ -1,3 +1,4 @@
+
 "use client";
 
 import { CirculaLogo } from "@/components/icons/circula-logo";
@@ -18,9 +19,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CircledUser } from "lucide-react";
+import { User } from "lucide-react"; // Changed CircledUser to User
 
 const dummyBloodData = [
   {
@@ -92,19 +94,25 @@ export default function BloodSupplyPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter(); // Initialize router
   const [userName, setUserName] = useState<string>("Unknown");
+  const [userInitial, setUserInitial] = useState<string>("?");
+  const [isMounted, setIsMounted] = useState(false); // State to track mount status
 
   useEffect(() => {
+    setIsMounted(true); // Component has mounted
     // Access localStorage only on the client-side
     const userData = localStorage.getItem("circulaUserData");
     if (userData) {
       const parsedUserData = JSON.parse(userData);
-      setUserName(parsedUserData.email.split('@')[0] || "Unknown");
+      const email = parsedUserData.email || "Unknown";
+      const namePart = email.split('@')[0];
+      setUserName(namePart || "Unknown");
+      setUserInitial(namePart ? namePart.substring(0, 1).toUpperCase() : "?");
     }
   }, []);
 
 
   const filteredBloodData = dummyBloodData.filter((data) => {
-    const searchStr = `${data.bloodType} ${data.location}`.toLowerCase();
+    const searchStr = `${data.bloodType} ${data.location} ${data.hospital}`.toLowerCase();
     return searchStr.includes(searchQuery.toLowerCase());
   });
 
@@ -117,45 +125,49 @@ export default function BloodSupplyPage() {
     router.push('/login');
   };
 
+   // Return null or a loader until mounted to prevent hydration issues
+  if (!isMounted) {
+    return null; // Or replace with a loading spinner/skeleton
+  }
+
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
       <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
         <CirculaLogo className="h-8 w-auto text-primary" />
-          <div className="flex gap-2">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                  Database
-              </Button>
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                  My Orders
-              </Button>
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                  Input Data
-              </Button>
-          </div>
-         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                  <Avatar className="mr-2">
-                    <AvatarImage src="https://picsum.photos/50/50" alt={userName} />
-                    <AvatarFallback>{userName.substring(0, 2).toUpperCase()}</AvatarFallback>
-                  </Avatar>
-                  {userName}
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>My Wallet</DropdownMenuItem>
-              <DropdownMenuItem>
-                 <Avatar className="mr-2">
-                    <AvatarImage src="https://picsum.photos/50/50" alt={userName} />
-                    <AvatarFallback>{userName.substring(0, 2).toUpperCase()}</AvatarFallback>
-                  </Avatar>
-                  My Profile
+        <div className="flex items-center gap-4"> {/* Changed gap */}
+            {/* Moved Buttons to the right */}
+            <Button variant="ghost">Database</Button>
+            <Button variant="ghost">My Orders</Button>
+            <Button variant="ghost">Input Data</Button>
+
+            {/* Profile Dropdown */}
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    {/* Changed trigger to just the Avatar */}
+                    <Avatar className="cursor-pointer">
+                        <AvatarImage data-ai-hint="user avatar" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
+                        <AvatarFallback>{userInitial}</AvatarFallback>
+                    </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                    {/* User info in the menu */}
+                     <Avatar className="mr-2 h-5 w-5">
+                        <AvatarImage data-ai-hint="user avatar small" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
+                        <AvatarFallback>{userInitial}</AvatarFallback>
+                    </Avatar>
+                    <span>{userName}</span>
                 </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>My Wallet</DropdownMenuItem>
+                <DropdownMenuItem>My Profile</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </div>
       </header>
 
       {/* Main Content */}
@@ -172,12 +184,12 @@ export default function BloodSupplyPage() {
           <div className="flex justify-center items-center space-x-2 max-w-lg mx-auto">
             <Input
               type="text"
-              placeholder="Search for blood type or location"
+              placeholder="Search for blood type, location, or hospital"
               className="flex-grow"
               value={searchQuery}
               onChange={handleSearchChange}
             />
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">Search</Button>
+            {/* Search button removed as filtering happens onChange */}
           </div>
         </section>
 
@@ -222,6 +234,13 @@ export default function BloodSupplyPage() {
                     </TableCell>
                   </TableRow>
                 ))}
+                 {filteredBloodData.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                      No blood supply data found matching your search.
+                    </TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </div>
@@ -235,3 +254,4 @@ export default function BloodSupplyPage() {
     </div>
   );
 }
+
