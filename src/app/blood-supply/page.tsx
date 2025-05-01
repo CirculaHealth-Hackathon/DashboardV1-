@@ -22,7 +22,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "lucide-react"; // Changed CircledUser to User
+import { User, Search } from "lucide-react"; // Import Search icon
 
 const dummyBloodData = [
   {
@@ -120,6 +120,13 @@ export default function BloodSupplyPage() {
     setSearchQuery(event.target.value);
   };
 
+  // Function to handle the search button click (optional, as filtering is live)
+  const handleSearchClick = () => {
+    // Currently does nothing as filtering is live based on searchQuery state
+    console.log("Search button clicked with query:", searchQuery);
+  };
+
+
   const handleLogout = () => {
     localStorage.removeItem("circulaUserData");
     router.push('/login');
@@ -189,7 +196,10 @@ export default function BloodSupplyPage() {
               value={searchQuery}
               onChange={handleSearchChange}
             />
-            {/* Search button removed as filtering happens onChange */}
+             {/* Add the search button back */}
+            <Button type="button" onClick={handleSearchClick}>
+              <Search className="h-4 w-4 mr-2" /> Search
+            </Button>
           </div>
         </section>
 
@@ -254,4 +264,5 @@ export default function BloodSupplyPage() {
     </div>
   );
 }
+
 
