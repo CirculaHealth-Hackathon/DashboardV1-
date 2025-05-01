@@ -1,3 +1,4 @@
+"use client";
 
 import { CirculaLogo } from "@/components/icons/circula-logo";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useState } from "react";
 
 const dummyBloodData = [
   {
@@ -78,6 +80,17 @@ const dummyBloodData = [
 ];
 
 export default function BloodSupplyPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredBloodData = dummyBloodData.filter((data) => {
+    const searchStr = `${data.bloodType} ${data.location}`.toLowerCase();
+    return searchStr.includes(searchQuery.toLowerCase());
+  });
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
@@ -102,6 +115,8 @@ export default function BloodSupplyPage() {
               type="text"
               placeholder="Search for blood type or location"
               className="flex-grow"
+              value={searchQuery}
+              onChange={handleSearchChange}
             />
             <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">Search</Button>
           </div>
@@ -133,7 +148,7 @@ export default function BloodSupplyPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {dummyBloodData.map((data, index) => (
+                {filteredBloodData.map((data, index) => (
                   <TableRow key={index} className="hover:bg-muted/40">
                     <TableCell className="font-medium text-primary">
                       {data.bloodType}
