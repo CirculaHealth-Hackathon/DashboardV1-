@@ -1,3 +1,6 @@
+
+"use client"; // Added "use client" directive
+
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -110,7 +113,7 @@ export default function InputDataPage() {
      <div className="min-h-screen bg-background text-foreground">
         {/* Header - Copied from blood-supply page for consistency */}
         <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
-            <Button variant="ghost" onClick={() => router.push('/blood-supply')}><ArrowLeft /></Button>
+
             <CirculaLogo className="h-8 w-auto text-primary cursor-pointer" onClick={() => router.push('/blood-supply')} />
             <div className="flex items-center gap-4">
                 <Button variant="ghost" className="border" onClick={() => router.push('/blood-supply')}>Database</Button>
@@ -144,10 +147,12 @@ export default function InputDataPage() {
 
         {/* Main Content */}
         <main className="container mx-auto px-4 py-12 flex flex-col items-center">
-        
-        <h1 className="text-3xl font-bold mb-8 text-center">
-        <Button variant="ghost" onClick={() => router.push('/blood-supply')}><ArrowLeft /></Button>
-        Input Blood Supply Data
+
+        <h1 className="text-3xl font-bold mb-8 text-center flex items-center"> {/* Use flex to align items */}
+            <Button variant="ghost" onClick={() => router.push('/blood-supply')} className="mr-2"> {/* Added margin */}
+                <ArrowLeft />
+            </Button>
+            Input Blood Supply Data
         </h1>
         <Card className="w-full max-w-lg shadow-md">
             <CardContent className="p-6">
@@ -272,5 +277,3 @@ export default function InputDataPage() {
     </div>
   );
 }
-
-    
