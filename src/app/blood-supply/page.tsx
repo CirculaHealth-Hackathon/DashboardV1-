@@ -107,8 +107,11 @@ export default function BloodSupplyPage() {
       const namePart = email.split('@')[0];
       setUserName(namePart || "Unknown");
       setUserInitial(namePart ? namePart.substring(0, 1).toUpperCase() : "?");
+    } else {
+      // Optional: Redirect to login if no user data found
+      // router.push('/login');
     }
-  }, []);
+  }, [router]);
 
 
   const filteredBloodData = dummyBloodData.filter((data) => {
@@ -147,7 +150,7 @@ export default function BloodSupplyPage() {
             {/* Moved Buttons to the right */}
             <Button variant="ghost" className="border">Database</Button>
             <Button variant="ghost" className="border">My Orders</Button>
-            <Button variant="ghost" className="border">Input Data</Button>
+            <Button variant="ghost" className="border" onClick={() => router.push('/input-data')}>Input Data</Button>
 
             {/* Profile Dropdown */}
             <DropdownMenu>
@@ -265,3 +268,4 @@ export default function BloodSupplyPage() {
   );
 }
 
+    
