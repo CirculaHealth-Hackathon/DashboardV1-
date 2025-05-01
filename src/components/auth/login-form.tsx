@@ -57,8 +57,8 @@ export function LoginForm() {
                 title: "Login Successful",
                 description: "Welcome back!",
             });
-            // Redirect to dashboard or home page after successful login
-            // router.push('/dashboard');
+            // Redirect to blood supply page after successful login
+            router.push('/blood-supply');
         } else {
             toast({
                 variant: "destructive",
@@ -91,13 +91,15 @@ export function LoginForm() {
         title: `Log in with ${provider}`,
         description: `${provider} login is not implemented yet.`,
       });
+    // Example redirect after social login attempt
+    // router.push('/blood-supply');
   }
 
   return (
     <div className="w-full max-w-md">
-         <h1 className="text-2xl font-bold mb-2">Log in to your account</h1>
+         <h1 className="text-2xl font-bold mb-2">Welcome back to Circula</h1>
          <p className="text-muted-foreground mb-6">
-            Welcome back! Please enter your details.
+            Log in to continue your journey.
          </p>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

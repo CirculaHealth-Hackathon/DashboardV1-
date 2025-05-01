@@ -48,12 +48,13 @@ export function SignUpForm() {
       localStorage.setItem("circulaUserData", JSON.stringify(data));
 
       toast({
-        title: "Account Creation Pending",
-        description: "Your account creation process has started.",
+        title: "Account Created",
+        description: "Your account has been successfully created.",
       });
-      // Optionally redirect or clear form
-      // form.reset();
-      // Consider redirecting: router.push('/dashboard')
+
+      // Redirect to blood supply page after successful signup
+       router.push('/blood-supply');
+
     } catch (error) {
       console.error("Failed to process sign up:", error);
       toast({
@@ -71,6 +72,8 @@ export function SignUpForm() {
         title: `Sign up with ${provider}`,
         description: `${provider} sign up is not implemented yet.`,
       });
+      // Example redirect after social sign up attempt
+      // router.push('/blood-supply');
   }
 
   return (
@@ -133,8 +136,8 @@ export function SignUpForm() {
             <Separator className="flex-1" />
         </div>
 
-        {/* Social Sign Up Buttons - Removed Apple */}
-        <div className="space-y-3">
+        {/* Social Sign Up Buttons */}
+         <div className="space-y-3">
              <Button variant="outline" className="w-full h-11 flex items-center justify-center gap-2" onClick={() => handleSocialSignUp('Google')}>
                 <SocialIcon network="google" style={{ height: 20, width: 20 }} />
                 Sign up with Google
@@ -143,6 +146,7 @@ export function SignUpForm() {
                 <SocialIcon network="x" style={{ height: 20, width: 20 }} bgColor="currentColor" fgColor="transparent" className="text-foreground" />
                 Sign up with X
             </Button>
+             {/* Removed Apple Button */}
         </div>
 
       <Toaster />
