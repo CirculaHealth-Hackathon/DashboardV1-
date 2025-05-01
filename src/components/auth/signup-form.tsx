@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { SocialIcon } from 'react-social-icons';
 import { useRouter } from 'next/navigation'; // Import useRouter
+import { Eye, EyeOff } from 'lucide-react'; // Import icons
 
 import { Button } from "@/components/ui/button";
 import {
@@ -33,6 +34,7 @@ type SignUpFormValues = z.infer<typeof formSchema>;
 export function SignUpForm() {
   const { toast } = useToast();
   const router = useRouter(); // Initialize router
+  const [showPassword, setShowPassword] = React.useState(false); // State for password visibility
 
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(formSchema),
@@ -45,6 +47,7 @@ export function SignUpForm() {
   const onSubmit = (data: SignUpFormValues) => {
     try {
       // In a real app, hash the password and call the backend API
+      // For now, store plain password for dummy login functionality
       localStorage.setItem("circulaUserData", JSON.stringify(data));
 
       toast({
@@ -76,6 +79,11 @@ export function SignUpForm() {
       // router.push('/blood-supply');
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+
   return (
     <div className="w-full max-w-md">
          <h1 className="text-2xl font-bold mb-2">Create your account</h1>
@@ -91,7 +99,7 @@ export function SignUpForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your email" {...field} />
+                    <Input placeholder="your.email@example.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,11 +112,23 @@ export function SignUpForm() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                      <Input
-                          type="password"
-                          placeholder="••••••••"
-                          {...field}
-                      />
+                      <div className="relative">
+                        <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="••••••••"
+                            {...field}
+                        />
+                         <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground hover:text-foreground"
+                            onClick={togglePasswordVisibility}
+                             aria-label={showPassword ? "Hide password" : "Show password"}
+                        >
+                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </Button>
+                     </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

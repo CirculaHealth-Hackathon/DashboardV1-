@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -7,6 +8,7 @@ import * as z from "zod";
 import { SocialIcon } from 'react-social-icons';
 import { useRouter } from 'next/navigation';
 import Link from "next/link";
+import { Eye, EyeOff } from 'lucide-react'; // Import icons
 
 import { Button } from "@/components/ui/button";
 import {
@@ -33,6 +35,7 @@ type LoginFormValues = z.infer<typeof formSchema>;
 export function LoginForm() {
   const { toast } = useToast();
   const router = useRouter();
+  const [showPassword, setShowPassword] = React.useState(false); // State for password visibility
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
@@ -53,7 +56,7 @@ export function LoginForm() {
         const userData = JSON.parse(storedData);
         // Convert both stored and input email/password to lowercase for comparison
         if (userData.email.toLowerCase() === data.email.toLowerCase() &&
-            userData.password.toLowerCase() === data.password.toLowerCase()) {
+            userData.password === data.password) { // Compare plain password
             toast({
                 title: "Login Successful",
                 description: "Welcome back!",
@@ -96,6 +99,10 @@ export function LoginForm() {
     // router.push('/blood-supply');
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="w-full max-w-md">
          <h1 className="text-2xl font-bold mb-2">Welcome back to Circula</h1>
@@ -111,7 +118,7 @@ export function LoginForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your email" {...field} />
+                    <Input placeholder="your.email@example.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -130,11 +137,23 @@ export function LoginForm() {
                         </Link>
                     </div>
                   <FormControl>
-                      <Input
-                          type="password"
-                          placeholder="••••••••"
-                          {...field}
-                      />
+                     <div className="relative">
+                        <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="••••••••"
+                            {...field}
+                        />
+                         <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground hover:text-foreground"
+                            onClick={togglePasswordVisibility}
+                            aria-label={showPassword ? "Hide password" : "Show password"}
+                        >
+                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </Button>
+                     </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
