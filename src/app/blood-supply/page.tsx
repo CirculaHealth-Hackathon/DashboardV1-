@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CircledUser } from "lucide-react";
 
 const dummyBloodData = [
   {
@@ -90,7 +91,6 @@ const dummyBloodData = [
 export default function BloodSupplyPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter(); // Initialize router
-  const [userEmail, setUserEmail] = useState<string>("Unknown User");
   const [userName, setUserName] = useState<string>("Unknown");
 
   useEffect(() => {
@@ -98,7 +98,6 @@ export default function BloodSupplyPage() {
     const userData = localStorage.getItem("circulaUserData");
     if (userData) {
       const parsedUserData = JSON.parse(userData);
-      setUserEmail(parsedUserData.email || "Unknown User");
       setUserName(parsedUserData.email.split('@')[0] || "Unknown");
     }
   }, []);
@@ -124,6 +123,17 @@ export default function BloodSupplyPage() {
       {/* Header */}
       <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
         <CirculaLogo className="h-8 w-auto text-primary" />
+          <div className="flex gap-2">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                  Database
+              </Button>
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                  My Orders
+              </Button>
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                  Input Data
+              </Button>
+          </div>
          <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="outline">
@@ -135,7 +145,15 @@ export default function BloodSupplyPage() {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+              <DropdownMenuItem>My Wallet</DropdownMenuItem>
+              <DropdownMenuItem>
+                 <Avatar className="mr-2">
+                    <AvatarImage src="https://picsum.photos/50/50" alt={userName} />
+                    <AvatarFallback>{userName.substring(0, 2).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                  My Profile
+                </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
       </header>
