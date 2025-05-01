@@ -9,10 +9,10 @@ export default function SplashScreen() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to the signup page after 2 seconds
+    // Redirect to the signup page after 5 seconds
     const timer = setTimeout(() => {
       router.push('/signup');
-    }, 2000); // 2000 milliseconds = 2 seconds
+    }, 5000); // 5000 milliseconds = 5 seconds
 
     // Cleanup the timer if the component unmounts
     return () => clearTimeout(timer);
