@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -146,7 +147,11 @@ export default function InputDataPage() {
 
         {/* Main Content */}
         <main className="container mx-auto px-4 py-12 flex flex-col items-center">
-        <h1 className="text-3xl font-bold mb-8 text-center">Input Blood Supply Data</h1>
+        
+        <h1 className="text-3xl font-bold mb-8 text-center">
+        <Button variant="ghost" onClick={() => router.push('/blood-supply')}><ArrowLeft /></Button>
+        Input Blood Supply Data
+        </h1>
         <Card className="w-full max-w-lg shadow-md">
             <CardContent className="p-6">
             <Form {...form}>
