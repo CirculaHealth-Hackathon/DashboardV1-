@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ArrowLeft, Minus, Plus } from "lucide-react";
 import Link from "next/link";
+import * as React from 'react';
 
 // Dummy data matching the structure in blood-supply/page.tsx
 const dummyBloodData = [
@@ -107,7 +108,7 @@ interface Props {
 
 export default function BloodRequestConfirmationPage({ params }: Props) {
   const { bloodCode: bloodCodeParam } = params;
-  const bloodCode = React.useMemo(() => bloodCodeParam, [bloodCodeParam]);
+  const bloodCode = React.use(React.useMemo(() => Promise.resolve(bloodCodeParam), [bloodCodeParam]));
   const [bloodData, setBloodData] = useState<BloodData | undefined>(undefined);
   const [requestAmount, setRequestAmount] = useState(1); // Default request amount
   const router = useRouter();
@@ -322,3 +323,4 @@ export default function BloodRequestConfirmationPage({ params }: Props) {
     </div>
   );
 }
+
