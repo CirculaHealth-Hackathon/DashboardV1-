@@ -16,6 +16,7 @@ import {
 import { ArrowLeft, Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import * as React from 'react';
+import { Checkbox } from "@/components/ui/checkbox"; // Import Checkbox
 
 // Dummy data matching the structure in blood-supply/page.tsx
 const dummyBloodData = [
@@ -155,7 +156,7 @@ export default function BloodRequestConfirmationPage({ params }: Props) {
   const handleContinueToPayment = () => {
     // Placeholder for payment logic
     console.log("Proceeding to payment for:", bloodData, "Amount:", requestAmount);
-    // router.push('/payment'); // Example redirect
+    router.push(`/select-payment-method?bloodCode=${bloodCode}&amount=${requestAmount}`); // Example redirect to payment page
   };
 
   if (!isMounted) {
@@ -323,5 +324,6 @@ export default function BloodRequestConfirmationPage({ params }: Props) {
     </div>
   );
 }
+
 
 
