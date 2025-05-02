@@ -108,8 +108,8 @@ interface Props {
 }
 
 export default function BloodRequestConfirmationPage({ params }: Props) {
-  const { bloodCode: bloodCodeParam } = params;
-  const bloodCode = React.use(React.useMemo(() => Promise.resolve(bloodCodeParam), [bloodCodeParam]));
+  // Directly access bloodCode using React.use()
+  const bloodCode = React.use(React.useMemo(() => Promise.resolve(params.bloodCode), [params.bloodCode]));
   const [bloodData, setBloodData] = useState<BloodData | undefined>(undefined);
   const [requestAmount, setRequestAmount] = useState(1); // Default request amount
   const router = useRouter();
@@ -324,6 +324,4 @@ export default function BloodRequestConfirmationPage({ params }: Props) {
     </div>
   );
 }
-
-
 
