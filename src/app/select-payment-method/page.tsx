@@ -13,9 +13,22 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { ArrowLeft } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox"; // Import Checkbox
+import { ArrowLeft, ChevronRight } from "lucide-react"; // Changed Checkbox import to ChevronRight
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"; // Import RadioGroup
+import { Label } from "@/components/ui/label"; // Import Label
 import * as React from 'react';
+
+// Dummy price lookup (replace with actual data fetching)
+const dummyPrices: { [key: string]: number } = {
+  "XXX0121": 600000,
+  "XXX0122": 550000,
+  "XXX0123": 580000,
+  "XXX0124": 620000,
+  "XXX0125": 700000,
+  "XXX0126": 650000,
+  "XXX0127": 680000,
+};
+
 
 export default function SelectPaymentMethodPage() {
   const router = useRouter();
@@ -25,7 +38,11 @@ export default function SelectPaymentMethodPage() {
   const [userName, setUserName] = useState<string>("Unknown");
   const [userInitial, setUserInitial] = useState<string>("?");
   const [isMounted, setIsMounted] = useState(false);
-  const totalPrice = 600000 * parseInt(amount || "1"); // Dummy price calculation
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | undefined>(undefined);
+
+  // Calculate price based on dummy data
+  const unitPrice = bloodCode ? (dummyPrices[bloodCode] || 600000) : 600000; // Default if not found
+  const totalPrice = unitPrice * parseInt(amount || "1");
 
   useEffect(() => {
     setIsMounted(true);
@@ -45,13 +62,26 @@ export default function SelectPaymentMethodPage() {
   };
 
   const handlePay = () => {
-    // Placeholder for actual payment logic
-    console.log("Initiating payment...");
-    // router.push('/success'); // Example redirect after successful payment
+    if (!selectedPaymentMethod) {
+        // Optionally show a toast or alert to select a method
+        console.error("Please select a payment method.");
+        return;
+    }
+    console.log("Proceeding to confirm order with payment method:", selectedPaymentMethod);
+    // Redirect to the new confirmation page, passing necessary data
+    router.push(`/confirm-order?bloodCode=${bloodCode}&amount=${amount}&paymentMethod=${selectedPaymentMethod}`);
   };
 
   if (!isMounted) {
     return null;
+  }
+
+  if (!bloodCode || !amount) {
+     return (
+        <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+            <p>Missing required information (blood code or amount).</p>
+        </div>
+     );
   }
 
   return (
@@ -94,29 +124,41 @@ export default function SelectPaymentMethodPage() {
 
         <Card className="w-full max-w-lg shadow-md">
           <CardContent className="p-6 space-y-6">
-             {/* Payment Options */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 rounded-md border">
+             {/* Payment Options with RadioGroup */}
+            <RadioGroup value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod} className="space-y-4">
+              <Label htmlFor="wallet" className="flex items-center justify-between p-4 rounded-md border has-[:checked]:border-primary">
                   <span>Use Funds from My Wallet</span>
-                  <Checkbox />
-              </div>
-              <div className="flex items-center justify-between p-4 rounded-md border">
+                  <RadioGroupItem value="My Wallet" id="wallet" />
+              </Label>
+              <Label htmlFor="qris" className="flex items-center justify-between p-4 rounded-md border has-[:checked]:border-primary">
                   <span>Pay with QRIS</span>
-                  <Checkbox />
-              </div>
-               <div className="flex items-center justify-between p-4 rounded-md border">
-                  <span>Pay with <span className="text-blue-500">Gpay</span> <span className="text-red-500">ShopeePay</span> <span className="text-indigo-500">OVO</span></span>
-                  <ArrowLeft/>
-              </div>
-              <div className="flex items-center justify-between p-4 rounded-md border">
-                  <span>Pay with Virtual Account <span className="text-blue-500">BCA</span> <span className="text-orange-500">Mandiri</span></span>
-                  <ArrowLeft/>
-              </div>
-              <div className="flex items-center justify-between p-4 rounded-md border">
+                  <RadioGroupItem value="QRIS" id="qris" />
+              </Label>
+              <Label htmlFor="ewallet" className="flex items-center justify-between p-4 rounded-md border has-[:checked]:border-primary cursor-pointer group">
+                  <div className="flex-grow">
+                      <span>Pay with </span>
+                      <span className="text-blue-500 font-medium">Gopay</span>,{' '}
+                      <span className="text-red-500 font-medium">ShopeePay</span>,{' '}
+                      <span className="text-indigo-500 font-medium">OVO</span>
+                  </div>
+                   {/* This RadioGroupItem is visually hidden but functionally present */}
+                  <RadioGroupItem value="E-Wallet" id="ewallet" className="sr-only" />
+                  <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
+              </Label>
+              <Label htmlFor="va" className="flex items-center justify-between p-4 rounded-md border has-[:checked]:border-primary cursor-pointer group">
+                   <div className="flex-grow">
+                      <span>Pay with Virtual Account </span>
+                      <span className="text-blue-500 font-medium">BCA</span>,{' '}
+                      <span className="text-orange-500 font-medium">Mandiri</span>
+                  </div>
+                  <RadioGroupItem value="Virtual Account" id="va" className="sr-only" />
+                  <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
+              </Label>
+              <Label htmlFor="idrx" className="flex items-center justify-between p-4 rounded-md border has-[:checked]:border-primary">
                   <span>Pay with IDRX</span>
-                  <Checkbox />
-              </div>
-            </div>
+                  <RadioGroupItem value="IDRX" id="idrx" />
+              </Label>
+            </RadioGroup>
 
              {/* Price */}
              <div className="flex items-center justify-between mt-8">
@@ -125,7 +167,11 @@ export default function SelectPaymentMethodPage() {
             </div>
 
             {/* Pay Button */}
-            <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-11 mt-6" onClick={handlePay}>
+            <Button
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-11 mt-6"
+                onClick={handlePay}
+                disabled={!selectedPaymentMethod} // Disable button if no method selected
+            >
                 Pay
             </Button>
 
@@ -140,4 +186,3 @@ export default function SelectPaymentMethodPage() {
     </div>
   );
 }
-
