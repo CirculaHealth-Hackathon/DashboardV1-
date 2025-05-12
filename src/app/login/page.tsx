@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { LoginForm } from "@/components/auth/login-form";
-import { CirculaLogo } from "@/components/icons/circula-logo";
+import { CirculaLogo } from "@/components/icons/circula-logo"; // Using the updated CirculaLogo
 
 export default function LoginPage() {
   const [bloodCells, setBloodCells] = useState<any[]>([]);
@@ -45,28 +45,27 @@ export default function LoginPage() {
 
         {/* Blood Cell Stream Animation Section */}
         <div className="hidden lg:block lg:w-1/2 relative overflow-hidden">
+           {isMounted && ( // Conditionally render animation only on client after mount
+            <div className="blood-cell-container absolute inset-0" style={{ zIndex: 0 }}>
+              {bloodCells.map((cell) => (
+                <div
+                  key={cell.key}
+                  className="blood-cell"
+                  style={{
+                    top: cell.top,
+                    left: cell.left,
+                    animationDelay: cell.animationDelay,
+                    animationDuration: cell.animationDuration,
+                    opacity: cell.opacity,
+                  }}
+                />
+              ))}
+            </div>
+          )}
           <div
             className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"
             style={{ zIndex: 1 }}
           />
-          <div
-            className="blood-cell-container absolute inset-0"
-            style={{ zIndex: 0 }}
-          >
-            {bloodCells.map((cell) => (
-              <div
-                key={cell.key}
-                className="blood-cell"
-                style={{
-                  top: cell.top,
-                  left: cell.left,
-                  animationDelay: cell.animationDelay,
-                  animationDuration: cell.animationDuration,
-                  opacity: cell.opacity,
-                }}
-              />
-            ))}
-          </div>
           <div className="absolute bottom-10 left-10 text-white p-4" style={{ zIndex: 2 }}>
             <h2 className="text-3xl font-semibold leading-tight">
               Circulating blood to <span className="text-primary">those</span> who{" "}

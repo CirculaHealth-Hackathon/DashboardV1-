@@ -324,4 +324,3 @@ export default function BloodRequestConfirmationPage({ params }: Props) {
     </div>
   );
 }
-

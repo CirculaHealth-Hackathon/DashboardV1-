@@ -134,7 +134,8 @@ interface Props {
 }
 
 export default function BloodSupplyDetailsPage({ params }: Props) {
-  const { bloodCode } = params; // Directly access bloodCode
+  // Directly access bloodCode using React.use()
+  const bloodCode = React.use(React.useMemo(() => Promise.resolve(params.bloodCode), [params.bloodCode]));
   const [bloodData, setBloodData] = useState<BloodData | undefined>(undefined);
   const router = useRouter();
   const [userName, setUserName] = useState<string>("Unknown");

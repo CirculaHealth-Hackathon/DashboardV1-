@@ -3,31 +3,37 @@ import * as React from "react";
 export function CirculaLogo(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="120" // Adjusted width for better display
-      height="24" // Adjusted height based on aspect ratio
-      viewBox="0 0 150 30" // Adjusted viewBox
+      viewBox="0 0 155 48" // Adjusted viewBox for new combined logo
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
+      {...props} // Allows passing className, style, etc.
     >
-      {/* Simple C shape */}
-      <path
-        d="M25 15C25 8.37258 19.6274 3 13 3C6.37258 3 1 8.37258 1 15C1 21.6274 6.37258 27 13 27"
-        stroke="currentColor" // Use currentColor to inherit color
-        strokeWidth="3" // Increased stroke width
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-       {/* Dot inside C */}
-      <circle cx="13" cy="15" r="4" fill="currentColor" />
+      {/* Group for C and Plus, scaled to fit if needed */}
+      <g>
+        {/* Blue C shape - Path data from CirculaCPlusLogo */}
+        <path
+          d="M 44.5 30 A 19 19 0 1 0 30 7.5"
+          strokeWidth="9"
+          stroke="currentColor" // Inherits color from parent (e.g., text-primary)
+          strokeLinecap="butt"
+          className="text-primary" // Ensures the C part is primary color
+        />
+        {/* White Plus Sign - Path data from CirculaCPlusLogo */}
+        <path
+          d="M38.5 8.5V23.5M31 16H46"
+          stroke="#FFFFFF" // Plus sign is white
+          strokeWidth="5"
+          strokeLinecap="butt"
+        />
+      </g>
       {/* Text "IRCULA" */}
       <text
-        x="35" // Adjusted position
-        y="21" // Adjusted vertical alignment
-        fontFamily="Arial, sans-serif" // Example font
-        fontSize="20" // Adjusted font size
+        x="55" // Positioned to the right of the C-plus symbol
+        y="33" // Adjusted for vertical alignment
+        fontFamily="Inter, Arial, sans-serif" // Using Inter to match app font, with fallbacks
+        fontSize="26" // Adjusted for visual balance with the C-plus symbol
         fontWeight="bold"
-        fill="hsl(var(--foreground))" // Use foreground color variable
+        fill="hsl(var(--foreground))" // Use foreground color from theme
       >
         IRCULA
       </text>
