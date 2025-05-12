@@ -3,7 +3,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { CirculaLogo } from '@/components/icons/circula-logo';
+import { CirculaCPlusLogo } from '@/components/icons/circula-c-plus-logo'; // Import the new logo
 
 export default function SplashScreen() {
   const router = useRouter();
@@ -20,7 +20,8 @@ export default function SplashScreen() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background">
-      <CirculaLogo className="h-12 w-auto text-primary animate-pulse" /> {/* Increased size and added pulse animation */}
+      {/* Use the new logo component and adjust size */}
+      <CirculaCPlusLogo className="h-24 w-24 text-primary animate-pulse" />
     </main>
   );
 }
