@@ -1,5 +1,5 @@
 
-"use client"; 
+"use client";
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,7 +8,8 @@ import * as z from "zod";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { useRouter } from 'next/navigation';
-import Image from 'next/image'; // Import Image component
+import Image from 'next/image';
+import { LOGO_URL } from "@/lib/constants";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -40,8 +41,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ArrowLeft } from "lucide-react";
 
-const LOGO_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F08417035-a55b-4993-829d-35641b92c9ce?alt=media&token=610e2d18-69c7-47d4-a1b8-c068077314f4";
-
 // Validation Schema
 const formSchema = z.object({
   date: z.date({
@@ -61,11 +60,11 @@ export default function InputDataPage() {
   const router = useRouter();
   const [userName, setUserName] = React.useState<string>("Unknown");
   const [userInitial, setUserInitial] = React.useState<string>("?");
-  const [isMounted, setIsMounted] = React.useState(false); 
+  const [isMounted, setIsMounted] = React.useState(false);
 
 
   React.useEffect(() => {
-    setIsMounted(true); 
+    setIsMounted(true);
     const userData = localStorage.getItem("circulaUserData");
     if (userData) {
       const parsedUserData = JSON.parse(userData);
@@ -99,7 +98,7 @@ export default function InputDataPage() {
   };
 
   if (!isMounted) {
-    return null; 
+    return null;
   }
 
 
@@ -107,12 +106,12 @@ export default function InputDataPage() {
      <div className="min-h-screen bg-background text-foreground">
         <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
             <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
-              <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+              <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
             </div>
             <div className="flex items-center gap-4">
                 <Button variant="ghost" className="border" onClick={() => router.push('/blood-supply')}>Database</Button>
                 <Button variant="ghost" className="border">My Orders</Button>
-                <Button variant="default">Input Data</Button> 
+                <Button variant="default">Input Data</Button>
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -141,8 +140,8 @@ export default function InputDataPage() {
 
         <main className="container mx-auto px-4 py-12 flex flex-col items-center">
 
-        <h1 className="text-3xl font-bold mb-8 text-center flex items-center"> 
-            <Button variant="ghost" onClick={() => router.push('/blood-supply')} className="mr-2"> 
+        <h1 className="text-3xl font-bold mb-8 text-center flex items-center">
+            <Button variant="ghost" onClick={() => router.push('/blood-supply')} className="mr-2">
                 <ArrowLeft />
             </Button>
             Input Blood Supply Data

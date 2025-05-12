@@ -21,15 +21,13 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { ArrowLeft, X } from "lucide-react"; 
+import { ArrowLeft, X } from "lucide-react";
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import * as React from "react";
-import Image from 'next/image'; // Import Image component
-
-const LOGO_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F08417035-a55b-4993-829d-35641b92c9ce?alt=media&token=610e2d18-69c7-47d4-a1b8-c068077314f4";
-
+import Image from 'next/image';
+import { LOGO_URL } from "@/lib/constants";
 
 // Dummy data for blood supply details
 const dummyBloodData = [
@@ -174,7 +172,7 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
       <div className="min-h-screen bg-background text-foreground">
         <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
            <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
-             <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+             <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
            </div>
           <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -211,7 +209,7 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
       {/* Header */}
       <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
         <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
-          <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+          <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
         </div>
           <DropdownMenu>
               <DropdownMenuTrigger asChild>

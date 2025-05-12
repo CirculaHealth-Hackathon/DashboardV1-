@@ -21,12 +21,11 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Search } from "lucide-react"; 
+import { User, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import Image from 'next/image'; // Import Image component
-
-const LOGO_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F08417035-a55b-4993-829d-35641b92c9ce?alt=media&token=610e2d18-69c7-47d4-a1b8-c068077314f4";
+import Image from 'next/image';
+import { LOGO_URL } from "@/lib/constants";
 
 const dummyBloodData = [
   {
@@ -117,14 +116,14 @@ const dummyBloodData = [
 
 export default function BloodSupplyPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const router = useRouter(); 
+  const router = useRouter();
   const [userName, setUserName] = useState<string>("Unknown");
   const [userInitial, setUserInitial] = useState<string>("?");
-  const [isMounted, setIsMounted] = useState(false); 
+  const [isMounted, setIsMounted] = useState(false);
 
 
   useEffect(() => {
-    setIsMounted(true); 
+    setIsMounted(true);
     const userData = localStorage.getItem("circulaUserData");
     if (userData) {
       const parsedUserData = JSON.parse(userData);
@@ -133,7 +132,7 @@ export default function BloodSupplyPage() {
       setUserName(namePart || "Unknown");
       setUserInitial(namePart ? namePart.substring(0, 1).toUpperCase() : "?");
     } else {
-      // router.push('/login');
+      // router.push('/login'); // Commented out to prevent premature redirect
     }
   }, []);
 
@@ -148,6 +147,8 @@ export default function BloodSupplyPage() {
   };
 
   const handleSearchClick = () => {
+    // The filtering is already happening in real-time due to `filteredBloodData`
+    // This function can be used for additional search logic if needed, e.g., API call
     console.log("Search button clicked with query:", searchQuery);
   };
 
@@ -158,7 +159,7 @@ export default function BloodSupplyPage() {
   };
 
   if (!isMounted) {
-    return null; 
+    return null;
   }
 
 
@@ -167,12 +168,12 @@ export default function BloodSupplyPage() {
       {/* Header */}
       <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
         <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
-          <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+          <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
         </div>
-        <div className="flex items-center gap-4"> 
-            <Button variant="ghost" className="border">Database</Button>
-            <Button variant="ghost" className="border">My Orders</Button>
-            <Button variant="ghost" className="border" onClick={() => router.push('/input-data')}>Input Data</Button>
+        <div className="flex items-center gap-4">
+            <Button variant="outline" className="border-border" onClick={() => router.push('/blood-supply')}>Database</Button>
+            <Button variant="outline" className="border-border">My Orders</Button>
+            <Button variant="outline" className="border-border" onClick={() => router.push('/input-data')}>Input Data</Button>
 
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -245,7 +246,7 @@ export default function BloodSupplyPage() {
                   <TableHead className="font-semibold text-right">
                     Date Uploaded
                   </TableHead>
-                   <TableHead className="font-semibold"></TableHead> 
+                   <TableHead className="font-semibold"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

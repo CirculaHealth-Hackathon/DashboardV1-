@@ -3,9 +3,9 @@
 
 import React, { useState, useEffect } from "react";
 import { SignUpForm } from "@/components/auth/signup-form";
-import Image from "next/image"; // Import Image component
+import Image from "next/image";
+import { LOGO_URL } from "@/lib/constants";
 
-const LOGO_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F08417035-a55b-4993-829d-35641b92c9ce?alt=media&token=610e2d18-69c7-47d4-a1b8-c068077314f4";
 const RIGHT_PANEL_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F09228060-b17b-4046-ad74-95a0c940d1d3?alt=media&token=7c478c55-3469-4898-9a33-7316456111a6";
 
 
@@ -14,7 +14,7 @@ export default function SignUpPage() {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true); 
+    setIsMounted(true);
 
     const generateBloodCells = () => {
       const newCells = Array.from({ length: 20 }, (_, i) => ({
@@ -28,7 +28,9 @@ export default function SignUpPage() {
       setBloodCells(newCells);
     };
 
-    generateBloodCells();
+    if (typeof window !== 'undefined') {
+        generateBloodCells();
+    }
   }, []);
 
   if (!isMounted) {
@@ -41,14 +43,14 @@ export default function SignUpPage() {
         {/* Form Section */}
         <div className="w-full lg:w-1/2 p-8 md:p-12 flex flex-col justify-center">
           <div className="mb-8">
-            <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+            <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
           </div>
           <SignUpForm />
         </div>
 
         {/* Image and Animation Section */}
         <div className="hidden lg:block lg:w-1/2 relative">
-           {isMounted && ( 
+           {isMounted && (
             <div className="blood-cell-container absolute inset-0" style={{ zIndex: 0 }}>
               {bloodCells.map((cell) => (
                 <div

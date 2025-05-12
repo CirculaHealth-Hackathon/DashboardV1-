@@ -13,14 +13,12 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { ArrowLeft, ChevronRight } from "lucide-react"; 
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"; 
-import { Label } from "@/components/ui/label"; 
+import { ArrowLeft, ChevronRight } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import * as React from 'react';
-import Image from 'next/image'; // Import Image component
-
-const LOGO_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F08417035-a55b-4993-829d-35641b92c9ce?alt=media&token=610e2d18-69c7-47d4-a1b8-c068077314f4";
-
+import Image from 'next/image';
+import { LOGO_URL } from "@/lib/constants";
 
 const dummyPrices: { [key: string]: number } = {
   "XXX0121": 600000,
@@ -43,7 +41,7 @@ export default function SelectPaymentMethodPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | undefined>(undefined);
 
-  const unitPrice = bloodCode ? (dummyPrices[bloodCode] || 600000) : 600000; 
+  const unitPrice = bloodCode ? (dummyPrices[bloodCode] || 600000) : 600000;
   const totalPrice = unitPrice * parseInt(amount || "1");
 
   useEffect(() => {
@@ -88,7 +86,7 @@ export default function SelectPaymentMethodPage() {
     <div className="min-h-screen bg-background text-foreground">
         <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
             <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
-              <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+              <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
             </div>
              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -166,7 +164,7 @@ export default function SelectPaymentMethodPage() {
             <Button
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-11 mt-6"
                 onClick={handlePay}
-                disabled={!selectedPaymentMethod} 
+                disabled={!selectedPaymentMethod}
             >
                 Pay
             </Button>

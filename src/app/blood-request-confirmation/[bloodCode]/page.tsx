@@ -16,22 +16,20 @@ import {
 import { ArrowLeft, Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import * as React from 'react';
-import { Checkbox } from "@/components/ui/checkbox"; 
-import Image from 'next/image'; // Import Image component
-
-const LOGO_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F08417035-a55b-4993-829d-35641b92c9ce?alt=media&token=610e2d18-69c7-47d4-a1b8-c068077314f4";
-
+import { Checkbox } from "@/components/ui/checkbox";
+import Image from 'next/image';
+import { LOGO_URL } from "@/lib/constants";
 
 const dummyBloodData = [
   {
     bloodType: "A+",
-    amount: "100 Unit", 
+    amount: "100 Unit",
     hospital: "Rumah Sakit Hermina",
-    location: "Yogyakarta", 
+    location: "Yogyakarta",
     bloodCode: "XXX0121",
     distance: "6 km",
-    dateUploaded: "Jan 10, 2025 10:10 WIB", 
-    price: 600000, 
+    dateUploaded: "Jan 10, 2025 10:10 WIB",
+    price: 600000,
   },
    {
     bloodType: "A-",
@@ -97,12 +95,12 @@ const dummyBloodData = [
 
 interface BloodData {
   bloodType: string;
-  amount: string; 
+  amount: string;
   hospital: string;
   location: string;
   bloodCode: string;
   distance: string;
-  dateUploaded: string; 
+  dateUploaded: string;
   price: number;
 }
 
@@ -113,7 +111,7 @@ interface Props {
 export default function BloodRequestConfirmationPage({ params }: Props) {
   const bloodCode = React.use(React.useMemo(() => Promise.resolve(params.bloodCode), [params.bloodCode]));
   const [bloodData, setBloodData] = useState<BloodData | undefined>(undefined);
-  const [requestAmount, setRequestAmount] = useState(1); 
+  const [requestAmount, setRequestAmount] = useState(1);
   const router = useRouter();
   const [userName, setUserName] = useState<string>("Unknown");
   const [userInitial, setUserInitial] = useState<string>("?");
@@ -156,7 +154,7 @@ export default function BloodRequestConfirmationPage({ params }: Props) {
 
   const handleContinueToPayment = () => {
     console.log("Proceeding to payment for:", bloodData, "Amount:", requestAmount);
-    router.push(`/select-payment-method?bloodCode=${bloodCode}&amount=${requestAmount}`); 
+    router.push(`/select-payment-method?bloodCode=${bloodCode}&amount=${requestAmount}`);
   };
 
   if (!isMounted) {
@@ -168,7 +166,7 @@ export default function BloodRequestConfirmationPage({ params }: Props) {
       <div className="min-h-screen bg-background text-foreground">
         <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
             <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
-              <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+              <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
             </div>
              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -206,7 +204,7 @@ export default function BloodRequestConfirmationPage({ params }: Props) {
     <div className="min-h-screen bg-background text-foreground">
         <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
             <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
-              <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+              <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
             </div>
              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
