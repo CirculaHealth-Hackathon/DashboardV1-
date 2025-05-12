@@ -87,6 +87,19 @@ interface BloodData {
   price: number;
 }
 
+export interface Order {
+  id: string;
+  bloodType: string;
+  amount: number;
+  hospital: string;
+  status: 'Ongoing' | 'Completed' | 'Cancelled';
+  destination: string;
+  price: number;
+  orderDate: string;
+  paymentMethod: string;
+  bloodCode: string;
+}
+
 export default function ConfirmOrderPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -102,6 +115,7 @@ export default function ConfirmOrderPage() {
 
   const requestAmount = parseInt(amount || "1");
   const totalPrice = bloodData ? bloodData.price * requestAmount : 0;
+  const deliveryDestination = "Rumah Sakit Siloam Jakarta"; // Hardcoded for now
 
   useEffect(() => {
     setIsMounted(true);
@@ -125,18 +139,39 @@ export default function ConfirmOrderPage() {
   };
 
   const handleConfirmOrder = () => {
-    console.log("Order confirmed:", {
-        bloodCode,
-        amount,
-        paymentMethod,
-        totalPrice,
-        destination: "Rumah Sakit Siloam Jakarta",
-    });
-     toast({
+    if (!bloodData || !paymentMethod || !bloodCode) {
+        toast({
+            variant: "destructive",
+            title: "Order Error",
+            description: "Missing order details. Please try again.",
+        });
+        return;
+    }
+
+    const newOrder: Order = {
+        id: Date.now().toString(),
+        bloodType: bloodData.bloodType,
+        amount: requestAmount,
+        hospital: bloodData.hospital,
+        status: 'Ongoing',
+        destination: deliveryDestination,
+        price: totalPrice,
+        orderDate: new Date().toISOString(),
+        paymentMethod: paymentMethod,
+        bloodCode: bloodCode,
+    };
+
+    const existingOrdersString = localStorage.getItem("circulaUserOrders");
+    const existingOrders: Order[] = existingOrdersString ? JSON.parse(existingOrdersString) : [];
+    existingOrders.push(newOrder);
+    localStorage.setItem("circulaUserOrders", JSON.stringify(existingOrders));
+
+    console.log("Order confirmed and saved:", newOrder);
+    toast({
       title: "Order Confirmed",
       description: "Your blood request has been successfully submitted.",
     });
-    router.push('/blood-supply');
+    router.push('/my-orders');
   };
 
   if (!isMounted) {
@@ -155,7 +190,7 @@ export default function ConfirmOrderPage() {
     <div className="min-h-screen bg-background text-foreground">
         <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
             <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
-              <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
+              <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority data-ai-hint="logo" />
             </div>
              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -213,7 +248,7 @@ export default function ConfirmOrderPage() {
             </div>
              <div className="flex items-center justify-between">
               <span className="font-semibold text-muted-foreground">Destination:</span>
-              <span className="font-medium">Rumah Sakit Siloam Jakarta</span>
+              <span className="font-medium">{deliveryDestination}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="font-semibold text-muted-foreground">Payment Method:</span>
@@ -244,3 +279,4 @@ export default function ConfirmOrderPage() {
     </div>
   );
 }
+

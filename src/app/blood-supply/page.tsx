@@ -21,11 +21,13 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import Image from 'next/image';
 import { LOGO_URL } from "@/lib/constants";
+import type { Order } from "../confirm-order/page"; // Import Order interface
+
 
 const dummyBloodData = [
   {
@@ -120,6 +122,7 @@ export default function BloodSupplyPage() {
   const [userName, setUserName] = useState<string>("Unknown");
   const [userInitial, setUserInitial] = useState<string>("?");
   const [isMounted, setIsMounted] = useState(false);
+  const [ongoingOrdersCount, setOngoingOrdersCount] = useState(0);
 
 
   useEffect(() => {
@@ -132,7 +135,13 @@ export default function BloodSupplyPage() {
       setUserName(namePart || "Unknown");
       setUserInitial(namePart ? namePart.substring(0, 1).toUpperCase() : "?");
     } else {
-      // router.push('/login'); // Commented out to prevent premature redirect
+      // router.push('/login'); // Prevent redirect if not logged in for now
+    }
+
+    const storedOrdersString = localStorage.getItem("circulaUserOrders");
+    if (storedOrdersString) {
+      const orders: Order[] = JSON.parse(storedOrdersString);
+      setOngoingOrdersCount(orders.filter(order => order.status === 'Ongoing').length);
     }
   }, []);
 
@@ -147,8 +156,6 @@ export default function BloodSupplyPage() {
   };
 
   const handleSearchClick = () => {
-    // The filtering is already happening in real-time due to `filteredBloodData`
-    // This function can be used for additional search logic if needed, e.g., API call
     console.log("Search button clicked with query:", searchQuery);
   };
 
@@ -168,11 +175,18 @@ export default function BloodSupplyPage() {
       {/* Header */}
       <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
         <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
-          <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
+          <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority data-ai-hint="logo" />
         </div>
         <div className="flex items-center gap-4">
             <Button variant="outline" className="border-border" onClick={() => router.push('/blood-supply')}>Database</Button>
-            <Button variant="outline" className="border-border">My Orders</Button>
+            <Button variant="outline" className="border-border" onClick={() => router.push('/my-orders')}>
+              My Orders
+              {ongoingOrdersCount > 0 && (
+                <Badge variant="destructive" className="ml-2 h-5 w-5 p-0 flex items-center justify-center rounded-full text-xs">
+                  {ongoingOrdersCount}
+                </Badge>
+              )}
+            </Button>
             <Button variant="outline" className="border-border" onClick={() => router.push('/input-data')}>Input Data</Button>
 
             <DropdownMenu>
@@ -291,3 +305,4 @@ export default function BloodSupplyPage() {
     </div>
   );
 }
+
