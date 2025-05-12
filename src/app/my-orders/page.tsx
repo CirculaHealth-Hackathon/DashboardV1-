@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -164,7 +163,11 @@ export default function MyOrdersPage() {
             <TableBody>
               {filteredOrders.length > 0 ? (
                 filteredOrders.map((order) => (
-                  <TableRow key={order.id}>
+                  <TableRow 
+                    key={order.id} 
+                    onClick={() => router.push(`/order-details/${order.id}`)}
+                    className="cursor-pointer hover:bg-muted/40"
+                  >
                     <TableCell className="font-medium text-primary">{order.bloodType}</TableCell>
                     <TableCell>{order.amount} unit</TableCell>
                     <TableCell>{order.hospital}</TableCell>
@@ -203,3 +206,4 @@ export default function MyOrdersPage() {
     </div>
   );
 }
+
