@@ -40,6 +40,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ArrowLeft } from "lucide-react";
+import type { Order } from "../confirm-order/page";
 
 // Validation Schema
 const formSchema = z.object({
@@ -61,6 +62,7 @@ export default function InputDataPage() {
   const [userName, setUserName] = React.useState<string>("Unknown");
   const [userInitial, setUserInitial] = React.useState<string>("?");
   const [isMounted, setIsMounted] = React.useState(false);
+  const [ongoingOrdersCount, setOngoingOrdersCount] = React.useState(0);
 
 
   React.useEffect(() => {
@@ -72,6 +74,11 @@ export default function InputDataPage() {
       const namePart = email.split('@')[0];
       setUserName(namePart || "Unknown");
       setUserInitial(namePart ? namePart.substring(0, 1).toUpperCase() : "?");
+    }
+     const storedOrdersString = localStorage.getItem("circulaUserOrders");
+    if (storedOrdersString) {
+      const orders: Order[] = JSON.parse(storedOrdersString);
+      setOngoingOrdersCount(orders.filter(order => order.status === 'Ongoing').length);
     }
   }, []);
 
@@ -109,8 +116,15 @@ export default function InputDataPage() {
               <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
             </div>
             <div className="flex items-center gap-4">
-                <Button variant="ghost" className="border" onClick={() => router.push('/blood-supply')}>Database</Button>
-                <Button variant="ghost" className="border">My Orders</Button>
+                <Button variant="outline" className="border-border" onClick={() => router.push('/blood-supply')}>Database</Button>
+                <Button variant="outline" className="border-border" onClick={() => router.push('/my-orders')}>
+                  My Orders
+                  {ongoingOrdersCount > 0 && (
+                    <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-destructive-foreground bg-destructive rounded-full">
+                      {ongoingOrdersCount}
+                    </span>
+                  )}
+                </Button>
                 <Button variant="default">Input Data</Button>
 
                 <DropdownMenu>
@@ -129,7 +143,7 @@ export default function InputDataPage() {
                             <span>{userName}</span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>My Wallet</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => router.push('/my-wallet')}>My Wallet</DropdownMenuItem>
                         <DropdownMenuItem>My Profile</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>

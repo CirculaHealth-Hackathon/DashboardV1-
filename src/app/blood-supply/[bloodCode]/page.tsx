@@ -28,6 +28,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import * as React from "react";
 import Image from 'next/image';
 import { LOGO_URL } from "@/lib/constants";
+import type { Order } from "../../confirm-order/page";
 
 // Dummy data for blood supply details
 const dummyBloodData = [
@@ -141,6 +142,7 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
   const [userName, setUserName] = useState<string>("Unknown");
   const [userInitial, setUserInitial] = useState<string>("?");
   const [isMounted, setIsMounted] = useState(false);
+  const [ongoingOrdersCount, setOngoingOrdersCount] = useState(0);
 
 
   useEffect(() => {
@@ -156,6 +158,12 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
 
     const selectedData = dummyBloodData.find((data) => data.bloodCode === bloodCode);
     setBloodData(selectedData);
+
+    const storedOrdersString = localStorage.getItem("circulaUserOrders");
+    if (storedOrdersString) {
+      const orders: Order[] = JSON.parse(storedOrdersString);
+      setOngoingOrdersCount(orders.filter(order => order.status === 'Ongoing').length);
+    }
   }, [bloodCode]);
 
   const handleLogout = () => {
@@ -190,7 +198,7 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
                   <span>{userName}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>My Wallet</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push('/my-wallet')}>My Wallet</DropdownMenuItem>
               <DropdownMenuItem>My Profile</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
@@ -211,6 +219,17 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
         <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
           <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
         </div>
+        <div className="flex items-center gap-4">
+            <Button variant="outline" className="border-border" onClick={() => router.push('/blood-supply')}>Database</Button>
+             <Button variant="outline" className="border-border" onClick={() => router.push('/my-orders')}>
+              My Orders
+              {ongoingOrdersCount > 0 && (
+                <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-destructive-foreground bg-destructive rounded-full">
+                  {ongoingOrdersCount}
+                </span>
+              )}
+            </Button>
+            <Button variant="outline" className="border-border" onClick={() => router.push('/input-data')}>Input Data</Button>
           <DropdownMenu>
               <DropdownMenuTrigger asChild>
                   <Avatar className="cursor-pointer">
@@ -227,12 +246,13 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
                   <span>{userName}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>My Wallet</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push('/my-wallet')}>My Wallet</DropdownMenuItem>
               <DropdownMenuItem>My Profile</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
               </DropdownMenuContent>
           </DropdownMenu>
+          </div>
       </header>
 
       {/* Main Content */}

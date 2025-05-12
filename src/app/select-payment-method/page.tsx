@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label";
 import * as React from 'react';
 import Image from 'next/image';
 import { LOGO_URL } from "@/lib/constants";
+import type { Order } from "../confirm-order/page";
 
 const dummyPrices: { [key: string]: number } = {
   "XXX0121": 600000,
@@ -40,6 +41,7 @@ export default function SelectPaymentMethodPage() {
   const [userInitial, setUserInitial] = useState<string>("?");
   const [isMounted, setIsMounted] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | undefined>(undefined);
+  const [ongoingOrdersCount, setOngoingOrdersCount] = useState(0);
 
   const unitPrice = bloodCode ? (dummyPrices[bloodCode] || 600000) : 600000;
   const totalPrice = unitPrice * parseInt(amount || "1");
@@ -53,6 +55,11 @@ export default function SelectPaymentMethodPage() {
       const namePart = email.split('@')[0];
       setUserName(namePart || "Unknown");
       setUserInitial(namePart ? namePart.substring(0, 1).toUpperCase() : "?");
+    }
+    const storedOrdersString = localStorage.getItem("circulaUserOrders");
+    if (storedOrdersString) {
+      const orders: Order[] = JSON.parse(storedOrdersString);
+      setOngoingOrdersCount(orders.filter(order => order.status === 'Ongoing').length);
     }
   }, []);
 
@@ -88,28 +95,40 @@ export default function SelectPaymentMethodPage() {
             <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
               <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
             </div>
-             <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Avatar className="cursor-pointer">
-                        <AvatarImage data-ai-hint="user avatar" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
-                        <AvatarFallback>{userInitial}</AvatarFallback>
-                    </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
-                        <Avatar className="mr-2 h-5 w-5">
-                            <AvatarImage data-ai-hint="user avatar small" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
+             <div className="flex items-center gap-4">
+                <Button variant="outline" className="border-border" onClick={() => router.push('/blood-supply')}>Database</Button>
+                <Button variant="outline" className="border-border" onClick={() => router.push('/my-orders')}>
+                  My Orders
+                  {ongoingOrdersCount > 0 && (
+                    <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-destructive-foreground bg-destructive rounded-full">
+                      {ongoingOrdersCount}
+                    </span>
+                  )}
+                </Button>
+                <Button variant="outline" className="border-border" onClick={() => router.push('/input-data')}>Input Data</Button>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Avatar className="cursor-pointer">
+                            <AvatarImage data-ai-hint="user avatar" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
                             <AvatarFallback>{userInitial}</AvatarFallback>
                         </Avatar>
-                        <span>{userName}</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>My Wallet</DropdownMenuItem>
-                    <DropdownMenuItem>My Profile</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuItem>
+                            <Avatar className="mr-2 h-5 w-5">
+                                <AvatarImage data-ai-hint="user avatar small" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
+                                <AvatarFallback>{userInitial}</AvatarFallback>
+                            </Avatar>
+                            <span>{userName}</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => router.push('/my-wallet')}>My Wallet</DropdownMenuItem>
+                        <DropdownMenuItem>My Profile</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
         </header>
 
       <main className="container mx-auto px-4 py-12 flex flex-col items-center">

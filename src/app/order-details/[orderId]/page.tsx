@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -114,6 +115,7 @@ export default function OrderDetailsPage({ params }: Props) {
   const [isMounted, setIsMounted] = useState(false);
   const [order, setOrder] = useState<Order | null>(null);
   const [supplierDetails, setSupplierDetails] = useState<SupplierData | null>(null);
+  const [ongoingOrdersCount, setOngoingOrdersCount] = useState(0);
 
   useEffect(() => {
     setIsMounted(true);
@@ -131,6 +133,8 @@ export default function OrderDetailsPage({ params }: Props) {
       const allOrders: Order[] = JSON.parse(storedOrdersString);
       const currentOrder = allOrders.find(o => o.id === orderId);
       setOrder(currentOrder || null);
+      setOngoingOrdersCount(allOrders.filter(o => o.status === 'Ongoing').length);
+
 
       if (currentOrder) {
         const supDetails = dummyBloodData.find(bd => bd.bloodCode === currentOrder.bloodCode);
@@ -162,28 +166,40 @@ export default function OrderDetailsPage({ params }: Props) {
           <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
             <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} priority />
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Avatar className="cursor-pointer">
-                <AvatarImage data-ai-hint="user avatar" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
-                <AvatarFallback>{userInitial}</AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-               <DropdownMenuItem>
-                    <Avatar className="mr-2 h-5 w-5">
-                        <AvatarImage data-ai-hint="user avatar small" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
-                        <AvatarFallback>{userInitial}</AvatarFallback>
-                    </Avatar>
-                    <span>{userName}</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>My Wallet</DropdownMenuItem>
-                <DropdownMenuItem>My Profile</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+           <div className="flex items-center gap-4">
+            <Button variant="outline" className="border-border" onClick={() => router.push('/blood-supply')}>Database</Button>
+            <Button variant="outline" className="border-border" onClick={() => router.push('/my-orders')}>
+              My Orders
+              {ongoingOrdersCount > 0 && (
+                <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-destructive-foreground bg-destructive rounded-full">
+                  {ongoingOrdersCount}
+                </span>
+              )}
+            </Button>
+            <Button variant="outline" className="border-border" onClick={() => router.push('/input-data')}>Input Data</Button>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className="cursor-pointer">
+                    <AvatarImage data-ai-hint="user avatar" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
+                    <AvatarFallback>{userInitial}</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                   <DropdownMenuItem>
+                        <Avatar className="mr-2 h-5 w-5">
+                            <AvatarImage data-ai-hint="user avatar small" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
+                            <AvatarFallback>{userInitial}</AvatarFallback>
+                        </Avatar>
+                        <span>{userName}</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => router.push('/my-wallet')}>My Wallet</DropdownMenuItem>
+                    <DropdownMenuItem>My Profile</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+          </div>
         </header>
         <main className="container mx-auto px-4 py-8 text-center">
           <p>Order not found.</p>
@@ -193,8 +209,6 @@ export default function OrderDetailsPage({ params }: Props) {
     );
   }
   
-  const ongoingOrdersCount = parseInt(localStorage.getItem('ongoingOrdersCount') || '0');
-
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -207,9 +221,9 @@ export default function OrderDetailsPage({ params }: Props) {
             <Button variant="outline" className="border-border" onClick={() => router.push('/my-orders')}>
               My Orders
               {ongoingOrdersCount > 0 && (
-                <Badge variant="destructive" className="ml-2 h-5 w-5 p-0 flex items-center justify-center rounded-full text-xs">
+                <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-destructive-foreground bg-destructive rounded-full">
                   {ongoingOrdersCount}
-                </Badge>
+                </span>
               )}
             </Button>
             <Button variant="outline" className="border-border" onClick={() => router.push('/input-data')}>Input Data</Button>
@@ -229,7 +243,7 @@ export default function OrderDetailsPage({ params }: Props) {
                     <span>{userName}</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>My Wallet</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push('/my-wallet')}>My Wallet</DropdownMenuItem>
                 <DropdownMenuItem>My Profile</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>

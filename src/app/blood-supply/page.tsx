@@ -143,7 +143,7 @@ export default function BloodSupplyPage() {
       const orders: Order[] = JSON.parse(storedOrdersString);
       setOngoingOrdersCount(orders.filter(order => order.status === 'Ongoing').length);
     }
-  }, []);
+  }, [router]);
 
 
   const filteredBloodData = dummyBloodData.filter((data) => {
@@ -205,7 +205,7 @@ export default function BloodSupplyPage() {
                     <span>{userName}</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>My Wallet</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push('/my-wallet')}>My Wallet</DropdownMenuItem>
                 <DropdownMenuItem>My Profile</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
@@ -305,4 +305,3 @@ export default function BloodSupplyPage() {
     </div>
   );
 }
-

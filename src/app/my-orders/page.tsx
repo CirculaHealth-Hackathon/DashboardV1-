@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -81,9 +82,9 @@ export default function MyOrdersPage() {
             <Button variant="default" onClick={() => router.push('/my-orders')}>
               My Orders
               {ongoingOrdersCount > 0 && (
-                <Badge variant="destructive" className="ml-2 h-5 w-5 p-0 flex items-center justify-center rounded-full text-xs">
+                 <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-destructive-foreground bg-destructive rounded-full">
                   {ongoingOrdersCount}
-                </Badge>
+                </span>
               )}
             </Button>
             <Button variant="outline" className="border-border" onClick={() => router.push('/input-data')}>Input Data</Button>
@@ -103,7 +104,7 @@ export default function MyOrdersPage() {
                 <span>{userName}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>My Wallet</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push('/my-wallet')}>My Wallet</DropdownMenuItem>
               <DropdownMenuItem>My Profile</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>Log Out</DropdownMenuItem>
@@ -206,4 +207,3 @@ export default function MyOrdersPage() {
     </div>
   );
 }
-
