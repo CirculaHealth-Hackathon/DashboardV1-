@@ -146,7 +146,7 @@ export default function MyWalletPage() {
                     <p className="text-muted-foreground text-sm">Current Balance</p>
                     <p className="text-3xl font-bold text-primary">Rp{balance.toLocaleString("id-ID")}</p>
                 </div>
-                <Button className="bg-[#FF8C00] hover:bg-[#FFA500] text-white">Deposit Funds</Button>
+                <Button className="bg-[#FF8C00] hover:bg-[#FFA500] text-white" onClick={() => router.push('/deposit-funds')}>Deposit Funds</Button>
             </CardContent>
         </Card>
 
@@ -239,3 +239,4 @@ export default function MyWalletPage() {
     </div>
   );
 }
+
