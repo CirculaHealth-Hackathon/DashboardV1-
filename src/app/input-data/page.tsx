@@ -1,4 +1,5 @@
-"use client"; // Added "use client" directive
+
+"use client"; 
 
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,6 +8,7 @@ import * as z from "zod";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { useRouter } from 'next/navigation';
+import Image from 'next/image'; // Import Image component
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -34,11 +36,11 @@ import {
 } from "@/components/ui/popover";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { CirculaLogo } from "@/components/icons/circula-logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ArrowLeft } from "lucide-react";
 
+const LOGO_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F08417035-a55b-4993-829d-35641b92c9ce?alt=media&token=610e2d18-69c7-47d4-a1b8-c068077314f4";
 
 // Validation Schema
 const formSchema = z.object({
@@ -59,12 +61,11 @@ export default function InputDataPage() {
   const router = useRouter();
   const [userName, setUserName] = React.useState<string>("Unknown");
   const [userInitial, setUserInitial] = React.useState<string>("?");
-  const [isMounted, setIsMounted] = React.useState(false); // State to track mount status
+  const [isMounted, setIsMounted] = React.useState(false); 
 
 
   React.useEffect(() => {
-    setIsMounted(true); // Component has mounted
-    // Access localStorage only on the client-side
+    setIsMounted(true); 
     const userData = localStorage.getItem("circulaUserData");
     if (userData) {
       const parsedUserData = JSON.parse(userData);
@@ -79,22 +80,17 @@ export default function InputDataPage() {
   const form = useForm<InputDataFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // date: new Date(), // Default to today, but allow empty initially
       units: 1,
       bloodCode: "",
     },
   });
 
   const onSubmit = (data: InputDataFormValues) => {
-    // Placeholder for actual data submission logic (e.g., API call)
     console.log("Input data:", data);
     toast({
       title: "Data Submitted",
       description: `Blood Type: ${data.bloodType}, Units: ${data.units}`,
     });
-    // Optionally reset the form or navigate away
-    // form.reset();
-    // router.push('/blood-supply');
   };
 
    const handleLogout = () => {
@@ -102,22 +98,21 @@ export default function InputDataPage() {
     router.push('/login');
   };
 
-  // Return null or a loader until mounted to prevent hydration issues
   if (!isMounted) {
-    return null; // Or replace with a loading spinner/skeleton
+    return null; 
   }
 
 
   return (
      <div className="min-h-screen bg-background text-foreground">
-        {/* Header - Copied from blood-supply page for consistency */}
         <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
-
-            <CirculaLogo className="h-8 w-auto text-primary cursor-pointer" onClick={() => router.push('/blood-supply')} />
+            <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
+              <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+            </div>
             <div className="flex items-center gap-4">
                 <Button variant="ghost" className="border" onClick={() => router.push('/blood-supply')}>Database</Button>
                 <Button variant="ghost" className="border">My Orders</Button>
-                <Button variant="default">Input Data</Button> {/* Highlight current page */}
+                <Button variant="default">Input Data</Button> 
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -144,11 +139,10 @@ export default function InputDataPage() {
             </div>
         </header>
 
-        {/* Main Content */}
         <main className="container mx-auto px-4 py-12 flex flex-col items-center">
 
-        <h1 className="text-3xl font-bold mb-8 text-center flex items-center"> {/* Use flex to align items */}
-            <Button variant="ghost" onClick={() => router.push('/blood-supply')} className="mr-2"> {/* Added margin */}
+        <h1 className="text-3xl font-bold mb-8 text-center flex items-center"> 
+            <Button variant="ghost" onClick={() => router.push('/blood-supply')} className="mr-2"> 
                 <ArrowLeft />
             </Button>
             Input Blood Supply Data
@@ -157,7 +151,6 @@ export default function InputDataPage() {
             <CardContent className="p-6">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                {/* Date Field */}
                 <FormField
                     control={form.control}
                     name="date"
@@ -200,7 +193,6 @@ export default function InputDataPage() {
                     )}
                 />
 
-                {/* Blood Type Field */}
                 <FormField
                     control={form.control}
                     name="bloodType"
@@ -229,7 +221,6 @@ export default function InputDataPage() {
                     )}
                 />
 
-                {/* Units Field */}
                 <FormField
                     control={form.control}
                     name="units"
@@ -244,7 +235,6 @@ export default function InputDataPage() {
                     )}
                 />
 
-                {/* Blood Code Field */}
                 <FormField
                     control={form.control}
                     name="bloodCode"
@@ -259,7 +249,6 @@ export default function InputDataPage() {
                     )}
                 />
 
-                {/* Submit Button */}
                 <Button type="submit" className="w-full">
                     Submit
                 </Button>
@@ -269,7 +258,6 @@ export default function InputDataPage() {
         </Card>
         </main>
 
-         {/* Footer Placeholder */}
         <footer className="container mx-auto px-4 py-6 mt-12 border-t text-center text-muted-foreground text-sm">
             © {new Date().getFullYear()} Circula. All rights reserved.
         </footer>

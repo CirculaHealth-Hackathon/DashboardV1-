@@ -1,10 +1,10 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { CirculaLogo } from "@/components/icons/circula-logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -13,12 +13,15 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { ArrowLeft, ChevronRight } from "lucide-react"; // Changed Checkbox import to ChevronRight
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"; // Import RadioGroup
-import { Label } from "@/components/ui/label"; // Import Label
+import { ArrowLeft, ChevronRight } from "lucide-react"; 
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"; 
+import { Label } from "@/components/ui/label"; 
 import * as React from 'react';
+import Image from 'next/image'; // Import Image component
 
-// Dummy price lookup (replace with actual data fetching)
+const LOGO_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F08417035-a55b-4993-829d-35641b92c9ce?alt=media&token=610e2d18-69c7-47d4-a1b8-c068077314f4";
+
+
 const dummyPrices: { [key: string]: number } = {
   "XXX0121": 600000,
   "XXX0122": 550000,
@@ -40,8 +43,7 @@ export default function SelectPaymentMethodPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | undefined>(undefined);
 
-  // Calculate price based on dummy data
-  const unitPrice = bloodCode ? (dummyPrices[bloodCode] || 600000) : 600000; // Default if not found
+  const unitPrice = bloodCode ? (dummyPrices[bloodCode] || 600000) : 600000; 
   const totalPrice = unitPrice * parseInt(amount || "1");
 
   useEffect(() => {
@@ -54,7 +56,7 @@ export default function SelectPaymentMethodPage() {
       setUserName(namePart || "Unknown");
       setUserInitial(namePart ? namePart.substring(0, 1).toUpperCase() : "?");
     }
-  }, [router]);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("circulaUserData");
@@ -63,12 +65,10 @@ export default function SelectPaymentMethodPage() {
 
   const handlePay = () => {
     if (!selectedPaymentMethod) {
-        // Optionally show a toast or alert to select a method
         console.error("Please select a payment method.");
         return;
     }
     console.log("Proceeding to confirm order with payment method:", selectedPaymentMethod);
-    // Redirect to the new confirmation page, passing necessary data
     router.push(`/confirm-order?bloodCode=${bloodCode}&amount=${amount}&paymentMethod=${selectedPaymentMethod}`);
   };
 
@@ -86,9 +86,10 @@ export default function SelectPaymentMethodPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-       {/* Header */}
         <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
-            <CirculaLogo className="h-8 w-auto text-primary cursor-pointer" onClick={() => router.push('/blood-supply')} />
+            <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
+              <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+            </div>
              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Avatar className="cursor-pointer">
@@ -113,7 +114,6 @@ export default function SelectPaymentMethodPage() {
             </DropdownMenu>
         </header>
 
-      {/* Main Content */}
       <main className="container mx-auto px-4 py-12 flex flex-col items-center">
          <h1 className="text-3xl font-bold mb-8 text-center flex items-center">
             <Button variant="ghost" onClick={() => router.back()} className="mr-2">
@@ -124,7 +124,6 @@ export default function SelectPaymentMethodPage() {
 
         <Card className="w-full max-w-lg shadow-md">
           <CardContent className="p-6 space-y-6">
-             {/* Payment Options with RadioGroup */}
             <RadioGroup value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod} className="space-y-4">
               <Label htmlFor="wallet" className="flex items-center justify-between p-4 rounded-md border has-[:checked]:border-primary">
                   <span>Use Funds from My Wallet</span>
@@ -141,7 +140,6 @@ export default function SelectPaymentMethodPage() {
                       <span className="text-red-500 font-medium">ShopeePay</span>,{' '}
                       <span className="text-indigo-500 font-medium">OVO</span>
                   </div>
-                   {/* This RadioGroupItem is visually hidden but functionally present */}
                   <RadioGroupItem value="E-Wallet" id="ewallet" className="sr-only" />
                   <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
               </Label>
@@ -160,17 +158,15 @@ export default function SelectPaymentMethodPage() {
               </Label>
             </RadioGroup>
 
-             {/* Price */}
              <div className="flex items-center justify-between mt-8">
               <span className="font-semibold text-lg">Rp{totalPrice.toLocaleString("id-ID")}</span>
               <span className="text-sm text-muted-foreground">Includes taxes and other fees</span>
             </div>
 
-            {/* Pay Button */}
             <Button
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-11 mt-6"
                 onClick={handlePay}
-                disabled={!selectedPaymentMethod} // Disable button if no method selected
+                disabled={!selectedPaymentMethod} 
             >
                 Pay
             </Button>
@@ -179,7 +175,6 @@ export default function SelectPaymentMethodPage() {
         </Card>
       </main>
 
-       {/* Footer Placeholder */}
       <footer className="container mx-auto px-4 py-6 mt-12 border-t text-center text-muted-foreground text-sm">
         © {new Date().getFullYear()} Circula. All rights reserved.
       </footer>

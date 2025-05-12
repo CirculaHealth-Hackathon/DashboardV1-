@@ -1,6 +1,6 @@
+
 "use client";
 
-import { CirculaLogo } from "@/components/icons/circula-logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,9 +21,12 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Search } from "lucide-react"; // Import Search icon
+import { User, Search } from "lucide-react"; 
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import Image from 'next/image'; // Import Image component
+
+const LOGO_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F08417035-a55b-4993-829d-35641b92c9ce?alt=media&token=610e2d18-69c7-47d4-a1b8-c068077314f4";
 
 const dummyBloodData = [
   {
@@ -114,15 +117,14 @@ const dummyBloodData = [
 
 export default function BloodSupplyPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const router = useRouter(); // Initialize router
+  const router = useRouter(); 
   const [userName, setUserName] = useState<string>("Unknown");
   const [userInitial, setUserInitial] = useState<string>("?");
-  const [isMounted, setIsMounted] = useState(false); // State to track mount status
+  const [isMounted, setIsMounted] = useState(false); 
 
 
   useEffect(() => {
-    setIsMounted(true); // Component has mounted
-    // Access localStorage only on the client-side
+    setIsMounted(true); 
     const userData = localStorage.getItem("circulaUserData");
     if (userData) {
       const parsedUserData = JSON.parse(userData);
@@ -131,10 +133,9 @@ export default function BloodSupplyPage() {
       setUserName(namePart || "Unknown");
       setUserInitial(namePart ? namePart.substring(0, 1).toUpperCase() : "?");
     } else {
-      // Optional: Redirect to login if no user data found
       // router.push('/login');
     }
-  }, [router]);
+  }, []);
 
 
   const filteredBloodData = dummyBloodData.filter((data) => {
@@ -146,9 +147,7 @@ export default function BloodSupplyPage() {
     setSearchQuery(event.target.value);
   };
 
-  // Function to handle the search button click (optional, as filtering is live)
   const handleSearchClick = () => {
-    // Currently does nothing as filtering is live based on searchQuery state
     console.log("Search button clicked with query:", searchQuery);
   };
 
@@ -158,9 +157,8 @@ export default function BloodSupplyPage() {
     router.push('/login');
   };
 
-   // Return null or a loader until mounted to prevent hydration issues
   if (!isMounted) {
-    return null; // Or replace with a loading spinner/skeleton
+    return null; 
   }
 
 
@@ -168,17 +166,16 @@ export default function BloodSupplyPage() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
       <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
-        <CirculaLogo className="h-8 w-auto text-primary" />
-        <div className="flex items-center gap-4"> {/* Changed gap */}
-            {/* Moved Buttons to the right */}
+        <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
+          <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+        </div>
+        <div className="flex items-center gap-4"> 
             <Button variant="ghost" className="border">Database</Button>
             <Button variant="ghost" className="border">My Orders</Button>
             <Button variant="ghost" className="border" onClick={() => router.push('/input-data')}>Input Data</Button>
 
-            {/* Profile Dropdown */}
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    {/* Changed trigger to just the Avatar */}
                     <Avatar className="cursor-pointer">
                         <AvatarImage data-ai-hint="user avatar" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
                         <AvatarFallback>{userInitial}</AvatarFallback>
@@ -186,7 +183,6 @@ export default function BloodSupplyPage() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                 <DropdownMenuItem>
-                    {/* User info in the menu */}
                      <Avatar className="mr-2 h-5 w-5">
                         <AvatarImage data-ai-hint="user avatar small" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
                         <AvatarFallback>{userInitial}</AvatarFallback>
@@ -205,7 +201,6 @@ export default function BloodSupplyPage() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        {/* Title Section */}
         <section className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Circulating Blood to <span className="text-primary">Those</span> Who{" "}
@@ -222,14 +217,12 @@ export default function BloodSupplyPage() {
               value={searchQuery}
               onChange={handleSearchChange}
             />
-             {/* Add the search button back */}
             <Button type="button" onClick={handleSearchClick}>
               <Search className="h-4 w-4 mr-2" /> Search
             </Button>
           </div>
         </section>
 
-        {/* Blood Supply Data Section */}
         <section>
           <h2 className="text-2xl font-semibold mb-2">Blood Supply Data</h2>
           <p className="text-muted-foreground mb-6">
@@ -252,7 +245,7 @@ export default function BloodSupplyPage() {
                   <TableHead className="font-semibold text-right">
                     Date Uploaded
                   </TableHead>
-                   <TableHead className="font-semibold"></TableHead> {/* Header for Details button */}
+                   <TableHead className="font-semibold"></TableHead> 
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -270,7 +263,6 @@ export default function BloodSupplyPage() {
                       {data.dateUploaded}
                     </TableCell>
                      <TableCell className="text-right">
-                      {/* Use Link component for navigation */}
                       <Link href={`/blood-supply/${data.bloodCode}`} passHref>
                         <Button variant="outline" size="sm">
                           Details
@@ -292,7 +284,6 @@ export default function BloodSupplyPage() {
         </section>
       </main>
 
-      {/* Footer Placeholder */}
       <footer className="container mx-auto px-4 py-6 mt-12 border-t text-center text-muted-foreground text-sm">
         © {new Date().getFullYear()} Circula. All rights reserved.
       </footer>

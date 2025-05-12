@@ -1,10 +1,10 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { CirculaLogo } from "@/components/icons/circula-logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -16,16 +16,19 @@ import {
 import { ArrowLeft } from "lucide-react";
 import * as React from 'react';
 import { useToast } from "@/hooks/use-toast";
+import Image from 'next/image'; // Import Image component
 
-// Dummy data matching the structure in blood-supply/page.tsx
+const LOGO_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F08417035-a55b-4993-829d-35641b92c9ce?alt=media&token=610e2d18-69c7-47d4-a1b8-c068077314f4";
+
+
 const dummyBloodData = [
   {
     bloodType: "A+",
-    amount: "100 Unit", // Available stock
+    amount: "100 Unit", 
     hospital: "Rumah Sakit Hermina",
     location: "Yogyakarta",
     bloodCode: "XXX0121",
-    price: 600000, // Price per unit
+    price: 600000, 
   },
    {
     bloodType: "A-",
@@ -79,7 +82,7 @@ const dummyBloodData = [
 
 interface BloodData {
   bloodType: string;
-  amount: string; // Available amount
+  amount: string; 
   hospital: string;
   location: string;
   bloodCode: string;
@@ -113,11 +116,10 @@ export default function ConfirmOrderPage() {
       setUserInitial(namePart ? namePart.substring(0, 1).toUpperCase() : "?");
     }
 
-    // Fetch blood data based on bloodCode
     const selectedData = dummyBloodData.find((data) => data.bloodCode === bloodCode);
     setBloodData(selectedData);
 
-  }, [bloodCode, router]);
+  }, [bloodCode]);
 
   const handleLogout = () => {
     localStorage.removeItem("circulaUserData");
@@ -125,19 +127,17 @@ export default function ConfirmOrderPage() {
   };
 
   const handleConfirmOrder = () => {
-    // Placeholder for actual order confirmation logic (e.g., API call)
     console.log("Order confirmed:", {
         bloodCode,
         amount,
         paymentMethod,
         totalPrice,
-        destination: "Rumah Sakit Siloam Jakarta", // Example destination
+        destination: "Rumah Sakit Siloam Jakarta", 
     });
      toast({
       title: "Order Confirmed",
       description: "Your blood request has been successfully submitted.",
     });
-    // Redirect to a success page or back to the main data page
     router.push('/blood-supply');
   };
 
@@ -155,9 +155,10 @@ export default function ConfirmOrderPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-       {/* Header */}
         <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
-            <CirculaLogo className="h-8 w-auto text-primary cursor-pointer" onClick={() => router.push('/blood-supply')} />
+            <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
+              <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+            </div>
              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Avatar className="cursor-pointer">
@@ -182,7 +183,6 @@ export default function ConfirmOrderPage() {
             </DropdownMenu>
         </header>
 
-      {/* Main Content */}
       <main className="container mx-auto px-4 py-12 flex flex-col items-center">
          <h1 className="text-3xl font-bold mb-8 text-center flex items-center">
             <Button variant="ghost" onClick={() => router.back()} className="mr-2">
@@ -193,7 +193,6 @@ export default function ConfirmOrderPage() {
 
         <Card className="w-full max-w-lg shadow-md">
           <CardContent className="p-6 space-y-4">
-            {/* Order Details */}
             <div className="flex items-center justify-between">
               <span className="font-semibold text-muted-foreground">Blood Type:</span>
               <span className="font-medium">{bloodData.bloodType}</span>
@@ -212,27 +211,24 @@ export default function ConfirmOrderPage() {
             </div>
              <div className="flex items-center justify-between">
               <span className="font-semibold text-muted-foreground">Blood Code:</span>
-              <span className="font-medium text-muted-foreground">{bloodData.bloodCode}</span> {/* Example blood code */}
+              <span className="font-medium text-muted-foreground">{bloodData.bloodCode}</span> 
             </div>
              <div className="flex items-center justify-between">
               <span className="font-semibold text-muted-foreground">Destination:</span>
-              <span className="font-medium">Rumah Sakit Siloam Jakarta</span> {/* Example Destination */}
+              <span className="font-medium">Rumah Sakit Siloam Jakarta</span> 
             </div>
             <div className="flex items-center justify-between">
               <span className="font-semibold text-muted-foreground">Payment Method:</span>
               <span className="font-medium">{paymentMethod}</span>
             </div>
 
-             {/* Separator */}
              <hr className="my-4 border-border"/>
 
-            {/* Confirm Order Section */}
             <div className="flex items-center justify-between">
               <span className="font-semibold text-lg">Confirm Order</span>
               <span className="font-bold text-lg text-primary">Rp{totalPrice.toLocaleString("id-ID")}</span>
             </div>
 
-            {/* Confirm Order Button */}
             <Button
                 className="w-full bg-[#FFA500] hover:bg-[#FF8C00] text-white h-11 mt-6"
                 onClick={handleConfirmOrder}
@@ -244,7 +240,6 @@ export default function ConfirmOrderPage() {
         </Card>
       </main>
 
-       {/* Footer Placeholder */}
       <footer className="container mx-auto px-4 py-6 mt-12 border-t text-center text-muted-foreground text-sm">
         © {new Date().getFullYear()} Circula. All rights reserved.
       </footer>

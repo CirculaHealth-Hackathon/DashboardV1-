@@ -1,22 +1,21 @@
+
 "use client";
 
 import React, { useState, useEffect } from "react";
 import { SignUpForm } from "@/components/auth/signup-form";
-import { CirculaLogo } from "@/components/icons/circula-logo"; // Using the updated CirculaLogo
-import Image from "next/image";
+import Image from "next/image"; // Import Image component
+
+const LOGO_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F08417035-a55b-4993-829d-35641b92c9ce?alt=media&token=610e2d18-69c7-47d4-a1b8-c068077314f4";
+const RIGHT_PANEL_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F09228060-b17b-4046-ad74-95a0c940d1d3?alt=media&token=7c478c55-3469-4898-9a33-7316456111a6";
+
 
 export default function SignUpPage() {
   const [bloodCells, setBloodCells] = useState<any[]>([]);
   const [isMounted, setIsMounted] = useState(false);
 
-  // Updated image URL to the user-provided image for the right panel
-  const imageUrl = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F09228060-b17b-4046-ad74-95a0c940d1d3?alt=media&token=7c478c55-3469-4898-9a33-7316456111a6";
-
-
   useEffect(() => {
-    setIsMounted(true); // Indicate component has mounted
+    setIsMounted(true); 
 
-    // Generate blood cell data client-side
     const generateBloodCells = () => {
       const newCells = Array.from({ length: 20 }, (_, i) => ({
         key: i,
@@ -33,7 +32,6 @@ export default function SignUpPage() {
   }, []);
 
   if (!isMounted) {
-    // Prevent rendering animation on server or during initial hydration mismatch
     return null;
   }
 
@@ -43,14 +41,14 @@ export default function SignUpPage() {
         {/* Form Section */}
         <div className="w-full lg:w-1/2 p-8 md:p-12 flex flex-col justify-center">
           <div className="mb-8">
-            <CirculaLogo className="h-8 w-auto text-primary" />
+            <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
           </div>
           <SignUpForm />
         </div>
 
-        {/* Image Section */}
+        {/* Image and Animation Section */}
         <div className="hidden lg:block lg:w-1/2 relative">
-           {isMounted && ( // Conditionally render Image only on client after mount
+           {isMounted && ( 
             <div className="blood-cell-container absolute inset-0" style={{ zIndex: 0 }}>
               {bloodCells.map((cell) => (
                 <div

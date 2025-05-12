@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,6 @@ import {
 } from "@/components/ui/table";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { CirculaLogo } from "@/components/icons/circula-logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -21,11 +21,14 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { ArrowLeft, X } from "lucide-react"; // Import ArrowLeft icon
+import { ArrowLeft, X } from "lucide-react"; 
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Import Card components
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; 
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import * as React from "react";
+import Image from 'next/image'; // Import Image component
+
+const LOGO_URL = "https://firebasestorage.googleapis.com/v0/b/fbtools-internal-prod.appspot.com/o/static%2Fmaker-images%2F08417035-a55b-4993-829d-35641b92c9ce?alt=media&token=610e2d18-69c7-47d4-a1b8-c068077314f4";
 
 
 // Dummy data for blood supply details
@@ -134,7 +137,6 @@ interface Props {
 }
 
 export default function BloodSupplyDetailsPage({ params }: Props) {
-  // Directly access bloodCode using React.use()
   const bloodCode = React.use(React.useMemo(() => Promise.resolve(params.bloodCode), [params.bloodCode]));
   const [bloodData, setBloodData] = useState<BloodData | undefined>(undefined);
   const router = useRouter();
@@ -145,7 +147,6 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
 
   useEffect(() => {
     setIsMounted(true);
-    // Access localStorage only on the client-side
     const userData = localStorage.getItem("circulaUserData");
     if (userData) {
       const parsedUserData = JSON.parse(userData);
@@ -155,10 +156,9 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
       setUserInitial(namePart ? namePart.substring(0, 1).toUpperCase() : "?");
     }
 
-    // Find the selected blood data based on bloodCode
     const selectedData = dummyBloodData.find((data) => data.bloodCode === bloodCode);
     setBloodData(selectedData);
-  }, [bloodCode, router]);
+  }, [bloodCode]);
 
   const handleLogout = () => {
     localStorage.removeItem("circulaUserData");
@@ -173,11 +173,11 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
     return (
       <div className="min-h-screen bg-background text-foreground">
         <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
-          <CirculaLogo className="h-8 w-auto text-primary cursor-pointer" onClick={() => router.push('/blood-supply')} />
-          {/* Profile Dropdown */}
+           <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
+             <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+           </div>
           <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                  {/* Changed trigger to just the Avatar */}
                   <Avatar className="cursor-pointer">
                       <AvatarImage data-ai-hint="user avatar" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
                       <AvatarFallback>{userInitial}</AvatarFallback>
@@ -185,7 +185,6 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
               <DropdownMenuItem>
-                  {/* User info in the menu */}
                    <Avatar className="mr-2 h-5 w-5">
                       <AvatarImage data-ai-hint="user avatar small" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
                       <AvatarFallback>{userInitial}</AvatarFallback>
@@ -211,11 +210,11 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
       <header className="container mx-auto px-4 py-4 flex justify-between items-center border-b">
-        <CirculaLogo className="h-8 w-auto text-primary cursor-pointer" onClick={() => router.push('/blood-supply')}/>
-          {/* Profile Dropdown */}
+        <div onClick={() => router.push('/blood-supply')} className="cursor-pointer">
+          <Image src={LOGO_URL} alt="Circula Logo" width={156} height={32} />
+        </div>
           <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                  {/* Changed trigger to just the Avatar */}
                   <Avatar className="cursor-pointer">
                       <AvatarImage data-ai-hint="user avatar" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
                       <AvatarFallback>{userInitial}</AvatarFallback>
@@ -223,7 +222,6 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
               <DropdownMenuItem>
-                  {/* User info in the menu */}
                    <Avatar className="mr-2 h-5 w-5">
                       <AvatarImage data-ai-hint="user avatar small" src={`https://picsum.photos/seed/${userName}/50/50`} alt={userName} />
                       <AvatarFallback>{userInitial}</AvatarFallback>
@@ -314,7 +312,6 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
                             </DialogClose>
                         </DialogContent>
                     </Dialog>
-                    {/* Link to the confirmation page */}
                     <Link href={`/blood-request-confirmation/${bloodData.bloodCode}`} passHref>
                          <Button>Request Blood Through Circula</Button>
                     </Link>
@@ -323,7 +320,6 @@ export default function BloodSupplyDetailsPage({ params }: Props) {
         </Card>
       </main>
 
-      {/* Footer Placeholder */}
       <footer className="container mx-auto px-4 py-6 mt-12 border-t text-center text-muted-foreground text-sm">
         © {new Date().getFullYear()} Circula. All rights reserved.
       </footer>
