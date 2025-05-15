@@ -261,6 +261,7 @@ export default function BloodSupplyPage() {
                     Date Uploaded
                   </TableHead>
                    <TableHead className="font-semibold"></TableHead>
+                   <TableHead className="font-semibold"></TableHead> {/* For On-Chain Tx button */}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -284,11 +285,19 @@ export default function BloodSupplyPage() {
                         </Button>
                       </Link>
                     </TableCell>
+                    <TableCell className="text-right">
+                      {/* Placeholder for On-Chain Tx link */}
+                      <Link href={`/on-chain-tx/${data.bloodCode}`} passHref>
+                        <Button variant="outline" size="sm">
+                          On-Chain Tx
+                        </Button>
+                      </Link>
+                    </TableCell>
                   </TableRow>
                 ))}
                  {filteredBloodData.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
+                    <TableCell colSpan={9} className="text-center text-muted-foreground py-8">
                       No blood supply data found matching your search.
                     </TableCell>
                   </TableRow>
@@ -305,3 +314,6 @@ export default function BloodSupplyPage() {
     </div>
   );
 }
+
+
+    
