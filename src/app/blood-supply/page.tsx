@@ -286,12 +286,19 @@ export default function BloodSupplyPage() {
                       </Link>
                     </TableCell>
                     <TableCell className="text-right">
-                      {/* Placeholder for On-Chain Tx link */}
-                      <Link href={`/on-chain-tx/${data.bloodCode}`} passHref>
-                        <Button variant="outline" size="sm">
-                          On-Chain Tx
-                        </Button>
-                      </Link>
+                      {index === 0 ? (
+                         <Link href="https://explorer.solana.com/tx/2mnnRora21d2vvrYHpqpH3bQgMKpzBp9wDv16MTCH8mpE3argJUDXhnPuw7SYjygAQ9drDRi5VvvvHLYCqb5xU3k?cluster=devnet" passHref target="_blank" rel="noopener noreferrer">
+                           <Button variant="outline" size="sm">
+                             On-Chain Tx
+                           </Button>
+                         </Link>
+                      ) : (
+                        <Link href={`/on-chain-tx/${data.bloodCode}`} passHref>
+                          <Button variant="outline" size="sm">
+                            On-Chain Tx
+                          </Button>
+                        </Link>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -314,6 +321,4 @@ export default function BloodSupplyPage() {
     </div>
   );
 }
-
-
     
