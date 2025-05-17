@@ -156,9 +156,9 @@ This user data is stored in `localStorage` after signup and used for the login f
 
 ## Contributing
 
-This is currently a Firebase Studio prototyped project. For contributions, please follow standard GitHub flow (fork, branch, pull request) if this project becomes open source.
+This is currently a prototyped project. For contributions, please follow standard GitHub flow (fork, branch, pull request) if this project becomes open source.
 
 ## License
 
-This project is currently under development in Firebase Studio. A specific open-source license will be applied if and when the project is publicly released. For now, all rights are reserved.
+This project is currently under development. A specific open-source license will be applied if and when the project is publicly released. For now, all rights are reserved.
 ```
