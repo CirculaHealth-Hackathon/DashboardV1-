@@ -15,7 +15,4 @@
 - Use a card-based layout with rounded corners for a modern and soft look.
 - Ensure consistent spacing and padding throughout the form to maintain visual harmony.
 - Use simple, line-based icons for form elements and actions.
-
-## Original User Request:
-help me create CRUD app using react with javascript just like image i send below, for the first below image its a sign up page. please use the same styling, colour, button, the whole as the image i send.
   
